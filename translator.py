@@ -70,7 +70,7 @@ async def translate_episodes_with_api(client: httpx.AsyncClient, episodes: list[
     return episodes
 
 
-def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language: str, bp: str = '0') -> dict:
+def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language: str, addon_url: str, bp: str = '0') -> dict:
     new_catalog = original
 
     for i, item in enumerate(new_catalog['metas']):
@@ -127,6 +127,13 @@ def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_
                         item['poster'] = tmdb.TMDB_POSTER_URL + detail['poster_path']
                 except Exception as e: 
                     print(e)
+
+            # Fix relative URLs and ensure poster/background exist
+            base_url = addon_url.rstrip('/')
+            if 'poster' in item and item['poster'] and not item['poster'].startswith('http'):
+                item['poster'] = f"{base_url}/{item['poster'].lstrip('/')}"
+            if 'background' in item and item['background'] and not item['background'].startswith('http'):
+                item['background'] = f"{base_url}/{item['background'].lstrip('/')}"
         # Error
         else:
             item['name'] = 'Invalid TMDB Key'

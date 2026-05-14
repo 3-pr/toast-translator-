@@ -253,7 +253,7 @@ async def get_catalog(response: Response, addon_url, type: str, user_settings: s
         else:
             return JSONResponse(content={}, headers=cloudflare_cache_headers)
 
-    new_catalog = translator.translate_catalog(catalog, tmdb_details, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language, bp)
+    new_catalog = translator.translate_catalog(catalog, tmdb_details, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language, addon_url, bp)
     return JSONResponse(content=new_catalog, headers=cloudflare_cache_headers)
 
 
@@ -447,6 +447,14 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
                 if imdb_id and 'tt' in imdb_id:
                     meta['meta']['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
 
+            # Fix relative URLs in meta
+            if 'meta' in meta:
+                base_url = addon_url.rstrip('/')
+                if 'poster' in meta['meta'] and meta['meta']['poster'] and not meta['meta']['poster'].startswith('http'):
+                    meta['meta']['poster'] = f"{base_url}/{meta['meta']['poster'].lstrip('/')}"
+                if 'background' in meta['meta'] and meta['meta']['background'] and not meta['meta']['background'].startswith('http'):
+                    meta['meta']['background'] = f"{base_url}/{meta['meta']['background'].lstrip('/')}"
+
             meta['meta']['id'] = id
             meta_cache[language].set(id, meta)
             return JSONResponse(content=meta, headers=cloudflare_cache_headers)
@@ -460,17 +468,27 @@ async def get_addon_catalog(addon_url, path: str):
         response = await client.get(f"{addon_url}/addon_catalog/{path}", stremio_headers)
         return JSONResponse(content=response.json(), headers=cloudflare_cache_headers)
 
-# Subs redirect
+# Subs proxy
 @app.get('/{addon_url}/{user_settings}/subtitles/{path:path}')
 async def get_subs(addon_url, path: str):
     addon_url = decode_base64_url(addon_url)
-    return RedirectResponse(f"{addon_url}/subtitles/{path}")
+    async with httpx.AsyncClient(follow_redirects=True, timeout=REQUEST_TIMEOUT) as client:
+        response = await client.get(f"{addon_url}/subtitles/{path}", headers=stremio_headers)
+        try:
+            return JSONResponse(content=response.json(), headers=cloudflare_cache_headers)
+        except:
+            return Response(content=response.content, status_code=response.status_code, headers=cloudflare_cache_headers)
 
-# Stream redirect
+# Stream proxy
 @app.get('/{addon_url}/{user_settings}/stream/{path:path}')
-async def get_subs(addon_url, path: str):
+async def get_streams(addon_url, path: str):
     addon_url = decode_base64_url(addon_url)
-    return RedirectResponse(f"{addon_url}/stream/{path}")
+    async with httpx.AsyncClient(follow_redirects=True, timeout=REQUEST_TIMEOUT) as client:
+        response = await client.get(f"{addon_url}/stream/{path}", headers=stremio_headers)
+        try:
+            return JSONResponse(content=response.json(), headers=cloudflare_cache_headers)
+        except:
+            return Response(content=response.content, status_code=response.status_code, headers=cloudflare_cache_headers)
 
 
 ### DASHBOARD ###
