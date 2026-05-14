@@ -203,9 +203,6 @@ async def get_catalog(response: Response, addon_url, type: str, user_settings: s
     
     # BetterPoster
     bp = user_settings.get('bp', '0')
-    bpp = user_settings.get('bpp', '')
-    bps = user_settings.get('bps', 'IM')
-    bpt = user_settings.get('bpt', '1')
 
     # Convert addon base64 url
     addon_url = decode_base64_url(addon_url)
@@ -247,7 +244,7 @@ async def get_catalog(response: Response, addon_url, type: str, user_settings: s
         else:
             return JSONResponse(content={}, headers=cloudflare_cache_headers)
 
-    new_catalog = translator.translate_catalog(catalog, tmdb_details, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language, bp, bpp, bps, bpt)
+    new_catalog = translator.translate_catalog(catalog, tmdb_details, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language, bp)
     return JSONResponse(content=new_catalog, headers=cloudflare_cache_headers)
 
 
@@ -265,12 +262,8 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
     
     # BetterPoster
     bp = user_settings.get('bp', '0')
-    bpp = user_settings.get('bpp', '')
-    bps = user_settings.get('bps', 'IM')
-    bpt = user_settings.get('bpt', '1')
 
     async with httpx.AsyncClient(follow_redirects=True, timeout=REQUEST_TIMEOUT) as client:
-
         # Get from cache
         meta = meta_cache[language].get(id)
 
@@ -443,11 +436,7 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
             if bp == '1' and 'meta' in meta:
                 imdb_id = id if 'tt' in id else meta['meta'].get('imdb_id')
                 if imdb_id and 'tt' in imdb_id:
-                    params = f"?lang={language.split('-')[0]}"
-                    if bpt == '0': params += "&tag=none"
-                    if bps != 'IM': params += f"&rs={bps}"
-                    path = f"poster-{bpp}" if bpp else "poster"
-                    meta['meta']['poster'] = f"https://btttr.cc/{path}/imdb/poster-default/{imdb_id}.jpg{params}"
+                    meta['meta']['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
 
             meta['meta']['id'] = id
             meta_cache[language].set(id, meta)

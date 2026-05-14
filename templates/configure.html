@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Translator</title>
-    <link rel="stylesheet" href="/static/style.css?v=0.2.6">
-    <script src="/static/utils.js?v=0.2.6"></script>
-    <script src="/static/stremio.js?v=0.2.6"></script>
-    <script src="/static/addonCard.js?v=0.2.6"></script>
-    <script src="/static/installer.js?v=0.2.6"></script>
+    <link rel="stylesheet" href="/static/style.css?v=0.2.8">
+    <script src="/static/utils.js?v=0.2.8"></script>
+    <script src="/static/stremio.js?v=0.2.8"></script>
+    <script src="/static/addonCard.js?v=0.2.8"></script>
+    <script src="/static/installer.js?v=0.2.8"></script>
 </head>
 
 <body>
@@ -21,10 +21,10 @@
         </div>
 
         <div class="description" id="desc-head">
-            <p>Premium Stremio catalog translator with dynamic posters</p>
+            <p>Premium Stremio catalog translator with BetterPoster support</p>
         </div>
 
-        <!-- Section 1: Login (Always visible until logged in) -->
+        <!-- Section 1: Login -->
         <div id="login-section" class="config-group">
             <h2 style="text-align: center;">🔑 Login to Stremio</h2>
             <p style="font-size: 0.85rem; text-align: center; color: var(--text-muted);">Access your addons to start translating</p>
@@ -36,9 +36,8 @@
             </p>
         </div>
 
-        <!-- Section 2: Main App (Hidden until login) -->
+        <!-- Section 2: Main App -->
         <div id="app-section" class="hidden">
-            <!-- Global Configuration -->
             <div class="config-group">
                 <h2>⚙️ Global Configuration</h2>
                 
@@ -49,56 +48,20 @@
                 <select id="language"></select>
                 <script src="/static/languages.js"></script>
 
-                <!-- BetterPoster Advanced Options -->
+                <!-- Simplified BetterPoster Section -->
                 <div class="better-poster-config">
                     <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
-                        🖼️ BetterPoster Options
+                        🖼️ BetterPoster Support
                     </h3>
                     
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
+                    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px;">
                         <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">Enable BetterPoster API</label>
+                        <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">Enable BetterPoster Service</label>
                     </div>
 
-                    <div id="better-poster-options" style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="bp-average" checked> <label for="bp-average">Average</label>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="bp-rating" checked> <label for="bp-rating">Rating</label>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="bp-genre" checked> <label for="bp-genre">Genre</label>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="bp-quality" checked> <label for="bp-quality">Quality</label>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="bp-trend" checked> <label for="bp-trend">Trend Tags</label>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 10px;">
-                            <label>⭐ Rating Source</label>
-                            <select id="bp-source">
-                                <option value="AV">Average (Default)</option>
-                                <option value="IM">IMDb</option>
-                                <option value="TM">TMDB</option>
-                                <option value="RT">Rotten Tomatoes</option>
-                                <option value="MC">Metacritic</option>
-                                <option value="TR">Trakt</option>
-                                <option value="LB">Letterboxd</option>
-                                <option value="RE">Roger Ebert</option>
-                            </select>
-                        </div>
-
-                        <div id="poster-preview">
-                            <img id="preview-img" src="" style="display: none;">
-                            <div id="preview-placeholder" style="padding: 40px; background: rgba(255,255,255,0.05); border-radius: 10px; color: var(--text-muted);">
-                                Change options to see preview
-                            </div>
-                        </div>
+                    <div id="poster-preview" style="text-align: center; margin-top: 10px;">
+                        <img id="preview-img" src="https://btttr.cc/poster/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 160px; border-radius: 10px; border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Standard BetterPoster Layout</p>
                     </div>
                 </div>
                 
@@ -126,59 +89,7 @@
     </div>
 
     <script>
-        // BetterPoster Live Preview Logic
-        const bpEnabled = document.getElementById('better-poster-enabled');
-        const bpOptions = document.getElementById('better-poster-options');
-        const previewImg = document.getElementById('preview-img');
-        const previewPlaceholder = document.getElementById('preview-placeholder');
-        const bpIds = ['bp-average', 'bp-rating', 'bp-genre', 'bp-quality', 'bp-trend', 'bp-source'];
-
-        function updatePreview() {
-            if (!bpEnabled.checked) {
-                previewImg.style.display = 'none';
-                previewPlaceholder.style.display = 'block';
-                return;
-            }
-
-            let flags = '';
-            if (document.getElementById('bp-genre').checked) flags += 'g';
-            if (document.getElementById('bp-quality').checked) flags += 'q';
-            if (document.getElementById('bp-rating').checked) flags += 'r';
-            if (document.getElementById('bp-average').checked) flags += 'a';
-            
-            let path = flags ? `poster-${flags}` : 'poster';
-
-            let params = '?lang=ar';
-            if (!document.getElementById('bp-trend').checked) params += '&tag=none';
-            const source = document.getElementById('bp-source').value;
-            if (source !== 'AV') params += '&rs=' + source;
-
-            const url = `https://btttr.cc/${path}/imdb/poster-default/tt0111161.jpg${params}`;
-            previewImg.src = url;
-            previewImg.onload = () => {
-                previewImg.style.display = 'inline-block';
-                previewPlaceholder.style.display = 'none';
-            };
-            previewImg.onerror = () => {
-                previewImg.style.display = 'none';
-                previewPlaceholder.innerText = "Preview not available for this combination";
-                previewPlaceholder.style.display = 'block';
-            };
-        }
-
-        bpEnabled.addEventListener('change', () => {
-            bpOptions.style.display = bpEnabled.checked ? 'flex' : 'none';
-            updatePreview();
-        });
-
-        bpIds.forEach(id => {
-            document.getElementById(id).addEventListener('change', updatePreview);
-        });
-
-        // Initialize preview
-        updatePreview();
-
-        // Stremio Login Flow Override
+        // Simple Login Flow
         const originalLogin = window.stremioLogin;
         window.stremioLogin = async function() {
             const success = await originalLogin();
@@ -188,11 +99,8 @@
             }
         };
 
-        // Enter key for login
         document.querySelectorAll('#login-section input').forEach(input => {
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') stremioLogin();
-            });
+            input.addEventListener('keydown', (e) => { if (e.key === 'Enter') stremioLogin(); });
         });
     </script>
 </body>

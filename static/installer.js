@@ -7,20 +7,10 @@ function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
     let rpdbKey = document.getElementById("rpdb-key") ? document.getElementById("rpdb-key").value : "";
     const topPosterKey = document.getElementById("top-key") ? document.getElementById("top-key").value : "";
 
-    // BetterPoster Logic
+    // Simplified BetterPoster Logic
     const bpEnabled = document.getElementById('better-poster-enabled').checked ? '1' : '0';
-    let flags = '';
-    if (document.getElementById('bp-genre').checked) flags += 'g';
-    if (document.getElementById('bp-quality').checked) flags += 'q';
-    if (document.getElementById('bp-rating').checked) flags += 'r';
-    if (document.getElementById('bp-average').checked) flags += 'a';
-    
-    const bpPath = flags;
-    
-    const bpSource = document.getElementById('bp-source').value;
-    const bpTrend = document.getElementById('bp-trend').checked ? '1' : '0';
 
-    let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled},bpp=${bpPath},bps=${bpSource},bpt=${bpTrend}`;
+    let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled}`;
     
     if (rpdb === '1') {
         userSettings += `,rpdb_key=${rpdbKey || "t0-free-rpdb"}`;
