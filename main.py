@@ -127,8 +127,9 @@ cinemeta_url = 'https://v3-cinemeta.strem.io'
 @app.get('/', response_class=HTMLResponse)
 @app.get('/configure', response_class=HTMLResponse)
 async def home(request: Request):
-    response = templates.TemplateResponse(request=request, name="configure.html", headers=cloudflare_cache_headers)
-    return response
+    return templates.TemplateResponse(
+        request=request, name="configure.html", context={"request": request}, headers=cloudflare_cache_headers
+    )
 
 @app.get('/{addon_url}/{user_settings}/configure')
 async def configure(addon_url):
@@ -137,8 +138,9 @@ async def configure(addon_url):
 
 @app.get('/link_generator', response_class=HTMLResponse)
 async def link_generator(request: Request):
-    response = templates.TemplateResponse(request=request, name="link_generator.html", headers=cloudflare_cache_headers)
-    return response
+    return templates.TemplateResponse(
+        request=request, name="link_generator.html", context={"request": request}, headers=cloudflare_cache_headers
+    )
 
 
 @app.get("/manifest.json")
@@ -457,8 +459,8 @@ async def get_subs(addon_url, path: str):
 
 @app.get('/dashboard', response_class=HTMLResponse)
 async def dashboard(request: Request):
-    response = templates.TemplateResponse(request=request, name="dashboard.html", headers=cloudflare_cache_headers)
-    return response
+    return templates.TemplateResponse(
+        request=request, name="dashboard.html", context={"request": request}, headers=cloudflare_cache_headers)
 
 # Dashboard password check
 @app.get("/check_auth")
