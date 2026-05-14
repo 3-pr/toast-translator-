@@ -35,7 +35,7 @@ async function translateSelected(authKey, selectList) {
     for (var j = 0; j < selectList.length; j++) {
         for (var i = 0; i < addons.length; i++) {
             if (selectList[j].id == addons[i].manifest.id) {
-                var addonUrl = await generateTranslatorLink(addons[i].transportUrl, selectList[j].rpdb, selectList[j].toastRatings, selectList[j].tsPoster, selectList[j].betterPoster);
+                var addonUrl = await generateTranslatorLink(addons[i].transportUrl, selectList[j].rpdb, selectList[j].toastRatings, selectList[j].tsPoster);
                 var response = await fetch(addonUrl);
                 var tranlatorManifest = await response.json();
                 addons[i] = {
@@ -50,7 +50,7 @@ async function translateSelected(authKey, selectList) {
             }
         }
         // Add new addon
-        var addonUrl = await generateTranslatorLink(selectList[j].transportUrl, selectList[j].rpdb, selectList[j].toastRatings, selectList[j].tsPoster, selectList[j].betterPoster);
+        var addonUrl = await generateTranslatorLink(selectList[j].transportUrl, selectList[j].rpdb, selectList[j].toastRatings, selectList[j].tsPoster);
         var response = await fetch(addonUrl);
         var tranlatorManifest = await response.json();
         addons[i] = {
@@ -79,7 +79,7 @@ async function reloadAddons(authKey) {
     await stremioLoadAddons(authKey);
 }
 
-function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster, bp) {
+function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
     const serverUrl = window.location.origin;
     const baseAddonUrl = getBaseUrl(addonUrl).replace("/manifest.json", "");
     const urlEncoded = btoa(baseAddonUrl);
@@ -98,16 +98,6 @@ function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster, bp) {
         userSettings += `,topkey=${topPosterKey}`
     }
 
-    if (bp) {
-        const bpt = document.getElementById("bp-trend").checked ? 1 : 0;
-        const bpq = document.getElementById("bp-quality").checked ? 1 : 0;
-        const bpg = document.getElementById("bp-genre").checked ? 1 : 0;
-        const bpr = document.getElementById("bp-rating").checked ? 1 : 0;
-        const bps = document.getElementById("bp-source").value;
-        const bptpl = document.getElementById("bp-template").value;
-        userSettings += `,bp=1,bpt=${bpt},bpq=${bpq},bpg=${bpg},bpr=${bpr},bps=${bps},bptpl=${bptpl}`;
-    }
-    
     if (addonUrl.includes(serverUrl)) {
         const addonBase64String = addonUrl.split("/")[3];
         return `${serverUrl}/${addonBase64String}/${userSettings}/manifest.json`;

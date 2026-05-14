@@ -127,7 +127,7 @@ cinemeta_url = 'https://v3-cinemeta.strem.io'
 @app.get('/', response_class=HTMLResponse)
 @app.get('/configure', response_class=HTMLResponse)
 async def home(request: Request):
-    response = templates.TemplateResponse("configure.html", {"request": request}, headers=cloudflare_cache_headers)
+    response = templates.TemplateResponse(request=request, name="configure.html", headers=cloudflare_cache_headers)
     return response
 
 @app.get('/{addon_url}/{user_settings}/configure')
@@ -137,7 +137,7 @@ async def configure(addon_url):
 
 @app.get('/link_generator', response_class=HTMLResponse)
 async def link_generator(request: Request):
-    response = templates.TemplateResponse("link_generator.html", {"request": request}, headers=cloudflare_cache_headers)
+    response = templates.TemplateResponse(request=request, name="link_generator.html", headers=cloudflare_cache_headers)
     return response
 
 
@@ -241,7 +241,7 @@ async def get_catalog(response: Response, addon_url, type: str, user_settings: s
         else:
             return JSONResponse(content={}, headers=cloudflare_cache_headers)
 
-    new_catalog = translator.translate_catalog(catalog, tmdb_details, user_settings)
+    new_catalog = translator.translate_catalog(catalog, tmdb_details, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language)
     return JSONResponse(content=new_catalog, headers=cloudflare_cache_headers)
 
 
@@ -298,7 +298,7 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
                         cinemeta_meta = {}
                 else:
                     # Not use TMDB Addon
-                    tmdb_meta, cinemeta_meta = await  meta_builder.build_metadata(id, type, language, tmdb_key, user_settings)
+                    tmdb_meta, cinemeta_meta = await  meta_builder.build_metadata(id, type, language, tmdb_key)
                 
                 # Not empty tmdb meta
                 if len(tmdb_meta.get('meta', [])) > 0:
@@ -383,7 +383,7 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
                                 tmdb_addon_meta_url = tmdb_addons_pool[(index + 1) % len(tmdb_addons_pool)]
                                 print(f"Switch to {tmdb_addon_meta_url}")
                     else:
-                        meta, cinemeta_meta = await meta_builder.build_metadata(imdb_id, type, language, tmdb_key, user_settings)
+                        meta, cinemeta_meta = await meta_builder.build_metadata(imdb_id, type, language, tmdb_key)
 
                     if len(meta['meta']) > 0:
                         if type == 'movie':
@@ -420,7 +420,7 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
 
             # Handle TMDB ids
             elif 'tmdb' in id:
-                meta, placeholder = await meta_builder.build_metadata(id, type, language, tmdb_key, user_settings)
+                meta, placeholder = await meta_builder.build_metadata(id, type, language, tmdb_key)
             # Not compatible id
             else:
                 response = await client.get(f"{addon_url}/meta/{type}/{id}.json", headers=stremio_headers)
@@ -457,7 +457,7 @@ async def get_subs(addon_url, path: str):
 
 @app.get('/dashboard', response_class=HTMLResponse)
 async def dashboard(request: Request):
-    response = templates.TemplateResponse("dashboard.html", {"request": request}, headers=cloudflare_cache_headers)
+    response = templates.TemplateResponse(request=request, name="dashboard.html", headers=cloudflare_cache_headers)
     return response
 
 # Dashboard password check

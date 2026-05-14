@@ -28,18 +28,5 @@ fetch('languages.json')
             option.textContent = `${flag} ${languageName} (${locale})`;
             select.appendChild(option);
         });
-
-        // Initial RTL check
-        if (select.value.startsWith('ar')) {
-            document.body.classList.add('rtl');
-        }
     })
     .catch(err => console.error('Error on load languages.json:', err));
-
-select.addEventListener('change', () => {
-    if (select.value.startsWith('ar')) {
-        document.body.classList.add('rtl');
-    } else {
-        document.body.classList.remove('rtl');
-    }
-});

@@ -18,7 +18,7 @@ MAX_TRANSLATE_EPISODES = 20
 with open("anime/tmdb_exceptions.json", "r", encoding="utf-8") as f:
     TMDB_EXCEPTIONS = json.load(f) 
 
-async def build_metadata(imdb_id: str, type: str, language: str, tmdb_key: str, settings: dict = {}):
+async def build_metadata(imdb_id: str, type: str, language: str, tmdb_key: str):
     tmdb_id = None
     if 'tt' in imdb_id:
         tmdb_id = await tmdb.convert_imdb_to_tmdb(imdb_id, language, tmdb_key)
@@ -108,6 +108,8 @@ async def build_metadata(imdb_id: str, type: str, language: str, tmdb_key: str, 
                 "slug": slug,
                 "writer": writers,
                 "year": year,
+                "poster": tmdb.TMDB_POSTER_URL + poster_path if poster_path else None,
+                "background": tmdb.TMDB_BACK_URL + backdrop_path if backdrop_path else None,
                 "logo": logo,
                 "runtime": convert_minutes_hours(tmdb_data.get('runtime','')) if type == 'movie' else convert_minutes_hours(extract_series_episode_runtime(tmdb_data, cinemeta_data)),
                 "id": 'tmdb:' + str(tmdb_data.get('id', '')),
@@ -121,16 +123,6 @@ async def build_metadata(imdb_id: str, type: str, language: str, tmdb_key: str, 
                 }
             }
         }
-
-        # BetterPoster support
-        if settings.get('bp') == '1' and imdb_id.startswith('tt'):
-            meta['meta']['poster'] = translator.get_better_poster_url(imdb_id, settings)
-        elif poster_path:
-            meta['meta']['poster'] = tmdb.TMDB_POSTER_URL + poster_path
-        else:
-            meta['meta']['poster'] = None
-        
-        meta['meta']['background'] = tmdb.TMDB_BACK_URL + backdrop_path if backdrop_path else None
 
         if type == 'series':
             meta['meta']['videos'] = await series_build_episodes(client, imdb_id, tmdb_id, tmdb_data.get('seasons', []), tmdb_data['external_ids']['tvdb_id'], tmdb_data['number_of_episodes'], language, tmdb_key)

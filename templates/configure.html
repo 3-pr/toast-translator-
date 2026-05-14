@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,9 @@
     <script src="/static/addonCard.js"></script>
     <script src="/static/installer.js"></script>
 </head>
+
 <body>
-    
+
     <div class="container">
         <div class="title">
             <span class="toast">Toast</span>
@@ -23,16 +25,25 @@
 
             <h2>📚 Compatible catalogs:</h2>
             <ul class="addon-list">
-                <li>🎬 <a href="stremio://v3-cinemeta.strem.io/manifest.json" target="_blank" rel="noopener">Cinemeta</a></li>
-                <li>🏛️ <a href="stremio://caching.stremio.net/manifest.json" target="_blank" rel="noopener">Public Domains</a></li>
-                <li>📺 <a href="https://7a82163c306e-stremio-netflix-catalog-addon.baby-beamup.club/configure" target="_blank" rel="noopener">Streaming Catalogs</a></li>
-                <li>🎥 <a href="https://1fe84bc728af-imdb-catalogs.baby-beamup.club/manifest.json" target="_blank" rel="noopener">IMDB Catalogs</a></li>
-                <li>🍅 <a href="https://7a82163c306e-rottentomatoes.baby-beamup.club/manifest.json" target="_blank" rel="noopener">Rotten Tomatoes Catalogs</a></li>
-                <li>📊 <a href="https://1fe84bc728af-stremio-mdblist.baby-beamup.club/configure" target="_blank" rel="noopener">MDBLists Catalogs</a></li>
+                <li>🎬 <a href="stremio://v3-cinemeta.strem.io/manifest.json" target="_blank"
+                        rel="noopener">Cinemeta</a></li>
+                <li>🏛️ <a href="stremio://caching.stremio.net/manifest.json" target="_blank" rel="noopener">Public
+                        Domains</a></li>
+                <li>📺 <a href="https://7a82163c306e-stremio-netflix-catalog-addon.baby-beamup.club/configure"
+                        target="_blank" rel="noopener">Streaming Catalogs</a></li>
+                <li>🎥 <a href="https://1fe84bc728af-imdb-catalogs.baby-beamup.club/manifest.json" target="_blank"
+                        rel="noopener">IMDB Catalogs</a></li>
+                <li>🍅 <a href="https://7a82163c306e-rottentomatoes.baby-beamup.club/manifest.json" target="_blank"
+                        rel="noopener">Rotten Tomatoes Catalogs</a></li>
+                <li>📊 <a href="https://1fe84bc728af-stremio-mdblist.baby-beamup.club/configure" target="_blank"
+                        rel="noopener">MDBLists Catalogs</a></li>
                 <li>🎭 <a href="https://trakt.dexter21767.com/configure/" target="_blank" rel="noopener">Trakt</a></li>
-                <li>🍣 <a href="stremio://anime-kitsu.strem.fun/manifest.json" target="_blank" rel="noopener">Anime Kitsu</a></li>
-                <li>🍜 <a href="https://1fe84bc728af-stremio-anime-catalogs.baby-beamup.club/configure" target="_blank" rel="noopener">Anime Catalogs</a></li>
-                <li>🦸‍♂️ <a href="stremio://addon-marvel.onrender.com/manifest.json" target="_blank" rel="noopener">Marvel Catalogs</a></li>
+                <li>🍣 <a href="stremio://anime-kitsu.strem.fun/manifest.json" target="_blank" rel="noopener">Anime
+                        Kitsu</a></li>
+                <li>🍜 <a href="https://1fe84bc728af-stremio-anime-catalogs.baby-beamup.club/configure" target="_blank"
+                        rel="noopener">Anime Catalogs</a></li>
+                <li>🦸‍♂️ <a href="stremio://addon-marvel.onrender.com/manifest.json" target="_blank"
+                        rel="noopener">Marvel Catalogs</a></li>
             </ul>
 
             <h2>🔧 How to translate:</h2>
@@ -45,9 +56,11 @@
 
             <h2>❓ Configuration Notes:</h2>
             <ul>
-                <li>🖼️ <strong>RPDB Posters</strong> → RPDB posters in English with free key, in selected language if tier is greater than 0</li>
+                <li>🖼️ <strong>RPDB Posters</strong> → RPDB posters in English with free key, in selected language if
+                    tier is greater than 0</li>
                 <li>🖼️ <strong>Toast Ratings Posters</strong> → free posters with ratings in selected language</li>
-                <li>🖼️ <strong>Top Posters</strong> → posters with ratings. <a href="https://api.top-streaming.stream/" class="generate-link-btn">Get API KEY</a> </li>
+                <li>🖼️ <strong>Top Posters</strong> → posters with ratings. <a href="https://api.top-streaming.stream/"
+                        class="generate-link-btn">Get API KEY</a> </li>
             </ul>
 
             <h2>🔐 Why login?:</h2>
@@ -59,7 +72,7 @@
 
             <h2>🧩 Link Generator:</h2>
             <ul>
-                <li>If you don't want to log in you can use the 
+                <li>If you don't want to log in you can use the
                     <a href="link_generator" class="generate-link-btn">Link Generator</a>
                     to generate addon installation URLs
                 </li>
@@ -86,58 +99,6 @@
             <div class="add-group" style="display: flex;">
                 <input type="text" id="addon-url" placeholder="URL of the addon manifest">
                 <button type="add" onclick="loadAddon(document.getElementById('addon-url').value, true)">+</button>
-            </div>
-        </div>
-
-        <!-- BetterPoster Settings -->
-        <div class="config-group" id="better-poster-settings" style="display: none; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 14px; background: #111;">
-            <h2 style="color: #ffffff; margin-top: 0; font-size: 20px;">🎨 BetterPoster Config</h2>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-trend" checked onchange="updateBPPreview()">
-                    <label for="bp-trend">🔥 Trend Tags</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-quality" checked onchange="updateBPPreview()">
-                    <label for="bp-quality">💎 Quality Tags</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-genre" checked onchange="updateBPPreview()">
-                    <label for="bp-genre">📂 Genre</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-rating" checked onchange="updateBPPreview()">
-                    <label for="bp-rating">⭐️ Rating</label>
-                </div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <div>
-                    <label for="bp-source" style="display: block; margin-bottom: 5px;">📊 Rating Source</label>
-                    <select id="bp-source" style="width: 100%;" onchange="updateBPPreview()">
-                        <option value="none">None (Default)</option>
-                        <option value="IM">IMDb</option>
-                        <option value="TM">TMDB</option>
-                        <option value="RT">Rotten Tomatoes</option>
-                        <option value="MC">Metacritic</option>
-                        <option value="TR">Trakt</option>
-                        <option value="LB">Letterboxd</option>
-                        <option value="RE">Roger Ebert</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="bp-template" style="display: block; margin-bottom: 5px;">🖼️ Template</label>
-                    <select id="bp-template" style="width: 100%;" onchange="updateBPPreview()">
-                        <option value="poster-default">Poster Default</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Live Preview -->
-            <div id="bp-preview-container" style="margin-top: 20px; text-align: center;">
-                <label style="display: block; margin-bottom: 10px; color: #888;">📸 Live Preview (Example)</label>
-                <img id="bp-preview-img" src="" alt="Poster Preview" style="max-width: 200px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);">
             </div>
         </div>
 
@@ -184,4 +145,5 @@
         passwordInput.addEventListener("keydown", tryLoginOnEnter);
     });
 </script>
+
 </html>

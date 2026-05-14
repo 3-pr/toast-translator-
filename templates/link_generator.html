@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <script src="/static/installer.js"></script>
     <script src="/static/utils.js"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="title">
@@ -16,7 +18,7 @@
             <span class="translator">Translator</span>
         </div>
 
-        
+
         <div class="config-group" style="display: flex;">
             <!-- 🔑 TMDB API Key -->
             <label for="tmdb-key">🔑 TMDB API Key</label>
@@ -37,59 +39,8 @@
             <label for="addon-url">🧩 Add Addon from URL</label>
             <div class="add-group" style="display: flex;">
                 <input type="text" id="addon-url" placeholder="URL of the addon manifest">
-                <button type="add" onclick="loadAddon(document.getElementById('addon-url').value, true, 'generator', true)">+</button>
-            </div>
-        </div>
-        
-        <!-- BetterPoster Settings -->
-        <div class="config-group" id="better-poster-settings" style="display: none; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 14px; background: #111;">
-            <h2 style="color: #ffffff; margin-top: 0; font-size: 20px;">🎨 BetterPoster Config</h2>
-            
-            <div style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; display: grid;">
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-trend" checked onchange="updateBPPreview()">
-                    <label for="bp-trend">🔥 Trend Tags</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-quality" checked onchange="updateBPPreview()">
-                    <label for="bp-quality">💎 Quality Tags</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-genre" checked onchange="updateBPPreview()">
-                    <label for="bp-genre">📂 Genre</label>
-                </div>
-                <div class="setting-row">
-                    <input type="checkbox" id="bp-rating" checked onchange="updateBPPreview()">
-                    <label for="bp-rating">⭐️ Rating</label>
-                </div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <div>
-                    <label for="bp-source" style="display: block; margin-bottom: 5px;">📊 Rating Source</label>
-                    <select id="bp-source" style="width: 100%;" onchange="updateBPPreview()">
-                        <option value="none">None (Default)</option>
-                        <option value="IM">IMDb</option>
-                        <option value="TM">TMDB</option>
-                        <option value="RT">Rotten Tomatoes</option>
-                        <option value="MC">Metacritic</option>
-                        <option value="TR">Trakt</option>
-                        <option value="LB">Letterboxd</option>
-                        <option value="RE">Roger Ebert</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="bp-template" style="display: block; margin-bottom: 5px;">🖼️ Template</label>
-                    <select id="bp-template" style="width: 100%;" onchange="updateBPPreview()">
-                        <option value="poster-default">Poster Default</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Live Preview -->
-            <div id="bp-preview-container" style="margin-top: 20px; text-align: center;">
-                <label style="display: block; margin-bottom: 10px; color: #888;">📸 Live Preview (Example)</label>
-                <img id="bp-preview-img" src="" alt="Poster Preview" style="max-width: 200px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);">
+                <button type="add"
+                    onclick="loadAddon(document.getElementById('addon-url').value, true, 'generator', true)">+</button>
             </div>
         </div>
 
@@ -100,7 +51,8 @@
             <img height='36' src='https://storage.ko-fi.com/cdn/kofi4.png?v=6' alt='Buy Me a Coffee at ko-fi.com' />
         </a>
     </div>
-    
+
 
 </body>
+
 </html>

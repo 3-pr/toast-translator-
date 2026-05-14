@@ -36,37 +36,6 @@ def get_cache_lenght():
 # Poster ratings
 RATINGS_SERVER = os.getenv('TR_SERVER', 'https://ca6771aaa821-toast-ratings.baby-beamup.club')
 
-def get_better_poster_url(imdb_id, settings):
-    if not imdb_id or not imdb_id.startswith('tt'):
-        return None
-    
-    # Prefix mapping based on user requirements
-    bpq = settings.get('bpq', '1') == '1'
-    bpg = settings.get('bpg', '1') == '1'
-    bpr = settings.get('bpr', '1') == '1'
-    
-    prefix = "poster-qa"
-    if not bpq:
-        prefix = "poster-a"
-    elif not bpg:
-        prefix = "poster-ra"
-    elif not bpr:
-        prefix = "poster-gqa"
-    
-    template = settings.get('bptpl', 'poster-default')
-    lang = settings.get('language', 'ar-SA').split('-')[0]
-    
-    url = f"https://btttr.cc/{prefix}/imdb/{template}/{imdb_id}.jpg?lang={lang}"
-    
-    if settings.get('bpt', '1') == '0':
-        url += "&tag=none"
-    
-    rs = settings.get('bps')
-    if rs and rs != 'none':
-        url += f"&rs={rs}"
-        
-    return url
-
 
 
 async def translate_with_api(client: httpx.AsyncClient, text: str, language: str, source='en') -> str:
@@ -101,17 +70,8 @@ async def translate_episodes_with_api(client: httpx.AsyncClient, episodes: list[
     return episodes
 
 
-def translate_catalog(original: dict, tmdb_meta: dict, settings: dict) -> dict:
+def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language: str) -> dict:
     new_catalog = original
-
-    # Extract settings
-    top_stream_poster = settings.get('tsp', '0')
-    toast_ratings = settings.get('tr', '0')
-    rpdb = settings.get('rpdb', '0')
-    rpdb_key = settings.get('rpdb_key', 't0-free-rpdb')
-    top_stream_key = settings.get('topkey', '')
-    language = settings.get('language', 'it-IT')
-    bp = settings.get('bp', '0')
 
     for i, item in enumerate(new_catalog['metas']):
         is_error = tmdb_meta[i].get('error', None)
@@ -122,10 +82,7 @@ def translate_catalog(original: dict, tmdb_meta: dict, settings: dict) -> dict:
                 detail = tmdb_meta[i][f"{type_key}_results"][0]
             except:
                 # Set poster if content not have tmdb informations
-                if bp == '1':
-                    if 'tt' in tmdb_meta[i].get('imdb_id', ''):
-                        item['poster'] = get_better_poster_url(tmdb_meta[i]['imdb_id'], settings)
-                elif toast_ratings == '1':
+                if toast_ratings == '1':
                     if 'tt' in tmdb_meta[i].get('imdb_id', ''):
                         item['poster'] = f"{RATINGS_SERVER}/{item['type']}/get_poster/{language}/{tmdb_meta[i]['imdb_id']}.jpg"
                 elif rpdb == '1':
@@ -149,10 +106,7 @@ def translate_catalog(original: dict, tmdb_meta: dict, settings: dict) -> dict:
                 except: pass
 
                 try: 
-                    if bp == '1':
-                        if 'tt' in tmdb_meta[i].get('imdb_id', ''):
-                            item['poster'] = get_better_poster_url(tmdb_meta[i]['imdb_id'], settings)
-                    elif toast_ratings == '1':
+                    if toast_ratings == '1':
                         item['poster'] = f"{RATINGS_SERVER}/{item['type']}/get_poster/{language}/{tmdb_meta[i]['imdb_id']}.jpg"
                     elif rpdb == '1':
                         if 't0' in rpdb_key:
