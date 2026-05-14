@@ -20,7 +20,7 @@ import zipfile
 import shutil
 
 # Settings
-translator_version = 'v0.2.1'
+translator_version = 'v0.2.2'
 FORCE_PREFIX = False
 FORCE_META = False
 USE_TMDB_ID_META = True
