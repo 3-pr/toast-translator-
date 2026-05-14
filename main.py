@@ -20,7 +20,7 @@ import zipfile
 import shutil
 
 # Settings
-translator_version = 'v0.2.2'
+translator_version = "v0.2.3" # Forced Rebuild
 FORCE_PREFIX = False
 FORCE_META = False
 USE_TMDB_ID_META = True
@@ -92,6 +92,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 templates = Jinja2Templates(directory="templates")
+# Disable template caching which causes issues on Vercel's read-only filesystem
+templates.env.cache = None 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
