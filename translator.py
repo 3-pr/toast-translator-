@@ -29,24 +29,19 @@ async def translate_with_api(client: httpx.AsyncClient, text: str, target_lang: 
     if not text or target_lang == 'en-US':
         return text
     
-    # Check cache
     cache_key = f"{text}_{target_lang}"
     if cache:
         cached = cache.get(cache_key)
-        if cached:
-            return cached
+        if cached: return cached
 
     try:
         url = f"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={target_lang.split('-')[0]}&dt=t&q={text}"
         response = await client.get(url, timeout=5)
         if response.status_code == 200:
             translated = "".join([part[0] for part in response.json()[0]])
-            if cache:
-                cache.set(cache_key, translated)
+            if cache: cache.set(cache_key, translated)
             return translated
-    except:
-        pass
-    
+    except: pass
     return text
 
 def translate_episodes(episodes: list, tmdb_id: str, type: str, language: str) -> list:
@@ -57,15 +52,22 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
     base_url = addon_url.rstrip('/')
 
     for i, item in enumerate(new_catalog['metas']):
-        # 1. Always ensure original poster/background are absolute
+        # 1. Fix relative URLs first (before overrides)
         if item.get('poster') and not item['poster'].startswith('http'):
             item['poster'] = f"{base_url}/{item['poster'].lstrip('/')}"
         if item.get('background') and not item['background'].startswith('http'):
             item['background'] = f"{base_url}/{item['background'].lstrip('/')}"
 
-        # 2. Try to translate if we have valid TMDB data
+        # 2. Get IMDb ID from any available source
+        imdb_id = item.get('imdb_id', '')
+        if not imdb_id and 'tt' in item.get('id', ''):
+            imdb_id = item['id']
+            
         meta = tmdb_meta[i] if i < len(tmdb_meta) else None
-        
+        if not imdb_id and meta and isinstance(meta, dict):
+            imdb_id = meta.get('imdb_id', '')
+
+        # 3. Handle Translation & Overrides
         if meta and isinstance(meta, dict) and not meta.get('error'):
             try:
                 item_type = item.get('type', 'movie')
@@ -74,45 +76,32 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
                 if meta.get(type_key) and len(meta[type_key]) > 0:
                     detail = meta[type_key][0]
                     
-                    # Update Title & Description
+                    # Metadata updates
                     item['name'] = detail.get('title', detail.get('name', item.get('name')))
                     item['description'] = detail.get('overview', item.get('description'))
-                    
-                    # Update Background
                     if detail.get('backdrop_path'):
                         item['background'] = tmdb.TMDB_BACK_URL + detail['backdrop_path']
 
-                    # Handle Poster Overrides (Priority: BP > RPDB > Toast > TS > TMDB)
-                    imdb_id = meta.get('imdb_id')
-                    
-                    # BetterPoster (btttr.cc)
-                    if bp == '1' and imdb_id:
+                    # Poster Overrides (Priority: BP > RPDB > Toast > TS > TMDB)
+                    if bp == '1' and imdb_id and 'tt' in str(imdb_id):
                         item['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
-                    
-                    # RPDB
-                    elif rpdb == '1' and imdb_id:
+                    elif rpdb == '1' and imdb_id and 'tt' in str(imdb_id):
                         if 't0' in rpdb_key:
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg"
                         else:
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg?lang={language.split('-')[0]}"
-                    
-                    # Toast Ratings
-                    elif toast_ratings == '1' and imdb_id:
+                    elif toast_ratings == '1' and imdb_id and 'tt' in str(imdb_id):
                         item['poster'] = f"{RATINGS_SERVER}/{item_type}/get_poster/{language}/{imdb_id}.jpg"
-                    
-                    # Top Stream
-                    elif top_stream_poster == '1' and imdb_id and top_stream_key:
+                    elif top_stream_poster == '1' and imdb_id and 'tt' in str(imdb_id) and top_stream_key:
                         clean_key = top_stream_key.strip('/')
                         item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?lang={language}"
-                    
-                    # TMDB Default
                     elif detail.get('poster_path'):
                         item['poster'] = tmdb.TMDB_POSTER_URL + detail['poster_path']
             except:
                 pass
         
-        elif meta and isinstance(meta, dict) and meta.get('error') == 'Invalid API key':
-             item['name'] = '⚠️ Invalid TMDB Key'
-             item['poster'] = 'https://i.imgur.com/Zi5UZV3.png'
+        # 4. Fallback: If no TMDB data but we have BP enabled and an IMDb ID
+        elif bp == '1' and imdb_id and 'tt' in str(imdb_id):
+            item['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
 
     return new_catalog
