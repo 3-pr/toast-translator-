@@ -9,11 +9,13 @@ function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
 
     // BetterPoster Logic
     const bpEnabled = document.getElementById('better-poster-enabled').checked ? '1' : '0';
-    let bpPath = '';
-    if (document.getElementById('bp-genre').checked) bpPath += 'g';
-    if (document.getElementById('bp-quality').checked) bpPath += 'q';
-    if (document.getElementById('bp-rating').checked) bpPath += 'r';
-    if (document.getElementById('bp-average').checked) bpPath += 'a';
+    let flags = '';
+    if (document.getElementById('bp-genre').checked) flags += 'g';
+    if (document.getElementById('bp-quality').checked) flags += 'q';
+    if (document.getElementById('bp-rating').checked) flags += 'r';
+    if (document.getElementById('bp-average').checked) flags += 'a';
+    
+    const bpPath = flags;
     
     const bpSource = document.getElementById('bp-source').value;
     const bpTrend = document.getElementById('bp-trend').checked ? '1' : '0';

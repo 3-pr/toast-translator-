@@ -82,6 +82,7 @@
                         <div style="margin-top: 10px;">
                             <label>⭐ Rating Source</label>
                             <select id="bp-source">
+                                <option value="AV">Average (Default)</option>
                                 <option value="IM">IMDb</option>
                                 <option value="TM">TMDB</option>
                                 <option value="RT">Rotten Tomatoes</option>
@@ -139,23 +140,30 @@
                 return;
             }
 
-            let path = 'poster-';
-            if (document.getElementById('bp-genre').checked) path += 'g';
-            if (document.getElementById('bp-quality').checked) path += 'q';
-            if (document.getElementById('bp-rating').checked) path += 'r';
-            if (document.getElementById('bp-average').checked) path += 'a';
+            let flags = '';
+            if (document.getElementById('bp-genre').checked) flags += 'g';
+            if (document.getElementById('bp-quality').checked) flags += 'q';
+            if (document.getElementById('bp-rating').checked) flags += 'r';
+            if (document.getElementById('bp-average').checked) flags += 'a';
             
-            if (path === 'poster-') path = 'poster';
+            let path = flags ? `poster-${flags}` : 'poster';
 
             let params = '?lang=ar';
             if (!document.getElementById('bp-trend').checked) params += '&tag=none';
             const source = document.getElementById('bp-source').value;
-            if (source !== 'IM') params += '&rs=' + source;
+            if (source !== 'AV') params += '&rs=' + source;
 
             const url = `https://btttr.cc/${path}/imdb/poster-default/tt0111161.jpg${params}`;
             previewImg.src = url;
-            previewImg.style.display = 'inline-block';
-            previewPlaceholder.style.display = 'none';
+            previewImg.onload = () => {
+                previewImg.style.display = 'inline-block';
+                previewPlaceholder.style.display = 'none';
+            };
+            previewImg.onerror = () => {
+                previewImg.style.display = 'none';
+                previewPlaceholder.innerText = "Preview not available for this combination";
+                previewPlaceholder.style.display = 'block';
+            };
         }
 
         bpEnabled.addEventListener('change', () => {

@@ -96,7 +96,7 @@ def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_
                     if 'tt' in imdb_id:
                         params = f"?lang={language.split('-')[0]}"
                         if bpt == '0': params += "&tag=none"
-                        if bps != 'IM': params += f"&rs={bps}"
+                        if bps != 'AV': params += f"&rs={bps}"
                         path = f"poster-{bpp}" if bpp else "poster"
                         item['poster'] = f"https://btttr.cc/{path}/imdb/poster-default/{imdb_id}.jpg{params}"
                 elif top_stream_poster == '1':
@@ -126,7 +126,7 @@ def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_
                         if 'tt' in imdb_id:
                             params = f"?lang={language.split('-')[0]}"
                             if bpt == '0': params += "&tag=none"
-                            if bps != 'IM': params += f"&rs={bps}"
+                            if bps != 'AV': params += f"&rs={bps}"
                             path = f"poster-{bpp}" if bpp else "poster"
                             item['poster'] = f"https://btttr.cc/{path}/imdb/poster-default/{imdb_id}.jpg{params}"
                     elif top_stream_poster == '1':
