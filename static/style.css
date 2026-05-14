@@ -184,8 +184,100 @@ button:hover {
 /* Hide Logic */
 .hidden { display: none !important; }
 
+/* Addon Card Styling */
+.addon-info {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.addon-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.addon-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.addon-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.addon-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.poster-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+}
+
+.poster-options > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.poster-options input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.addon-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.addon-actions button {
+    margin: 0;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+.read-only-textarea {
+    width: 100%;
+    background: #000;
+    color: var(--success);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 12px;
+    margin-top: 10px;
+    resize: none;
+    overflow: hidden;
+}
+
+.donation {
+    margin-top: 30px;
+    text-align: center;
+}
+
 /* Mobile */
 @media (max-width: 600px) {
     .container { padding: 20px; }
     .title { font-size: 2rem; }
+    .poster-options { grid-template-columns: 1fr; }
 }

@@ -1,4 +1,4 @@
-function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
+function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster, bpOverride = null) {
     const serverUrl = window.location.origin;
     const baseAddonUrl = getBaseUrl(addonUrl).replace("/manifest.json", "");
     const urlEncoded = btoa(baseAddonUrl);
@@ -7,8 +7,12 @@ function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
     let rpdbKey = document.getElementById("rpdb-key") ? document.getElementById("rpdb-key").value : "";
     const topPosterKey = document.getElementById("top-key") ? document.getElementById("top-key").value : "";
 
-    // Simplified BetterPoster Logic
-    const bpEnabled = document.getElementById('better-poster-enabled').checked ? '1' : '0';
+    // BetterPoster Logic (use override if provided, otherwise fallback to global)
+    let bpEnabled = bpOverride;
+    if (bpEnabled === null) {
+        const globalBP = document.getElementById('better-poster-enabled');
+        bpEnabled = globalBP && globalBP.checked ? '1' : '0';
+    }
 
     let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled}`;
     

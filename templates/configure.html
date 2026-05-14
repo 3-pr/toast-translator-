@@ -5,69 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Translator</title>
-    <link rel="stylesheet" href="/static/style.css?v=0.2.8">
-    <script src="/static/utils.js?v=0.2.8"></script>
-    <script src="/static/stremio.js?v=0.2.8"></script>
-    <script src="/static/addonCard.js?v=0.2.8"></script>
-    <script src="/static/installer.js?v=0.2.8"></script>
+    <link rel="stylesheet" href="/static/style.css?v=0.2.9">
+    <script src="/static/utils.js?v=0.2.9"></script>
+    <script src="/static/stremio.js?v=0.2.9"></script>
+    <script src="/static/addonCard.js?v=0.2.9"></script>
+    <script src="/static/installer.js?v=0.2.9"></script>
 </head>
 
 <body>
-
     <div class="container">
         <div class="title">
             <span class="toast">Toast</span>
             <span class="translator">Translator</span>
         </div>
 
-        <div class="description" id="desc-head">
-            <p>Premium Stremio catalog translator with BetterPoster support</p>
-        </div>
-
         <!-- Section 1: Login -->
         <div id="login-section" class="config-group">
-            <h2 style="text-align: center;">🔑 Login to Stremio</h2>
-            <p style="font-size: 0.85rem; text-align: center; color: var(--text-muted);">Access your addons to start translating</p>
-            <input type="email" id="stremio-email" placeholder="Stremio email">
-            <input type="password" id="stremio-password" placeholder="Stremio password">
-            <button onclick="stremioLogin()">Login & Start</button>
+            <h2 style="text-align: center;">🔑 Stremio Login</h2>
+            <input type="email" id="stremio-email" placeholder="Email">
+            <input type="password" id="stremio-password" placeholder="Password">
+            <button onclick="stremioLogin()">Login</button>
             <p style="text-align: center; margin-top: 15px;">
-                <a href="/link_generator" class="generate-link-btn">🧩 Use Link Generator Instead</a>
+                <a href="/link_generator" class="generate-link-btn">🧩 Use Link Generator</a>
             </p>
         </div>
 
-        <!-- Section 2: Main App -->
+        <!-- Section 2: App -->
         <div id="app-section" class="hidden">
             <div class="config-group">
-                <h2>⚙️ Global Configuration</h2>
-                
-                <label for="tmdb-key">🔑 TMDB API Key (Required)</label>
-                <input type="text" id="tmdb-key" placeholder="Enter your TMDB API key">
+                <label for="tmdb-key">🔑 TMDB API Key</label>
+                <input type="text" id="tmdb-key" placeholder="Enter TMDB API key">
 
-                <label for="language">🌍 Preferred Language</label>
+                <label for="language">🌍 Translation Language</label>
                 <select id="language"></select>
                 <script src="/static/languages.js"></script>
 
-                <!-- Simplified BetterPoster Section -->
-                <div class="better-poster-config">
-                    <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
-                        🖼️ BetterPoster Support
-                    </h3>
-                    
-                    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px;">
-                        <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px; cursor: pointer;">
-                        <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">Enable BetterPoster Service</label>
-                    </div>
-
-                    <div id="poster-preview" style="text-align: center; margin-top: 10px;">
-                        <img id="preview-img" src="https://btttr.cc/poster/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 160px; border-radius: 10px; border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Standard BetterPoster Layout</p>
+                <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-top: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px;">
+                        <label for="better-poster-enabled" style="margin:0;">Global BetterPoster Toggle</label>
                     </div>
                 </div>
-                
-                <label for="addon-url" style="margin-top: 10px;">🧩 Custom Addon URL</label>
+
+                <label for="addon-url" style="margin-top: 15px;">🧩 Add Custom Addon</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="addon-url" placeholder="Addon manifest.json URL">
+                    <input type="text" id="addon-url" placeholder="Addon URL">
                     <button style="width: auto; margin:0;" onclick="loadAddon(document.getElementById('addon-url').value, true)">Add</button>
                 </div>
             </div>
@@ -75,9 +57,9 @@
             <div id="addons-loader" class="loader hidden"></div>
             <div id="addons-container"></div>
 
-            <div class="translate-button hidden" id="action-buttons">
-                <button onclick="translateSelected(stremioUser.result.authKey, transteArray)">Apply Translation</button>
-                <button style="background: var(--border);" onclick="reloadAddons(stremioUser.result.authKey)">Reload Addons</button>
+            <div class="addon-actions hidden" id="action-buttons" style="margin-top: 20px;">
+                <button onclick="translateSelectedAddons()" style="background: var(--success);">Apply All Translations</button>
+                <button onclick="reloadAddons(stremioUser.result.authKey)" style="background: var(--border);">Reload Addon List</button>
             </div>
         </div>
 
@@ -89,16 +71,59 @@
     </div>
 
     <script>
-        // Simple Login Flow
-        const originalLogin = window.stremioLogin;
-        window.stremioLogin = async function() {
-            const success = await originalLogin();
-            if (stremioUser && stremioUser.result && stremioUser.result.authKey) {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('app-section').classList.remove('hidden');
-            }
-        };
+        var transteArray = [];
 
+        async function translateSelectedAddons() {
+            if (transteArray.length === 0) {
+                showError("⚠️ Please select at least one addon first!");
+                return;
+            }
+
+            const tmdbKey = document.getElementById("tmdb-key").value;
+            if (!tmdbKey) {
+                showError("⚠️ TMDB Key is required!");
+                return;
+            }
+
+            showLoader();
+            const authKey = stremioUser.result.authKey;
+            const addonCollection = await stremioAddonCollectionGet(authKey);
+            let currentAddons = addonCollection.result.addons;
+
+            for (let addon of transteArray) {
+                const newTransportUrl = generateTranslatorLink(
+                    addon.transportUrl, 
+                    addon.rpdb, 
+                    addon.toastRatings, 
+                    addon.tsPoster, 
+                    addon.bp
+                );
+                
+                // Find and update the addon in the collection
+                const index = currentAddons.findIndex(a => a.transportUrl === addon.transportUrl);
+                if (index !== -1) {
+                    currentAddons[index].transportUrl = newTransportUrl;
+                } else {
+                    // If not found (manually added), add it
+                    currentAddons.push({
+                        transportUrl: newTransportUrl,
+                        manifest: addon
+                    });
+                }
+            }
+
+            const response = await stremioAddonCollectionSet(authKey, currentAddons);
+            hideLoader();
+
+            if (response.result && response.result.success) {
+                showSuccess("✅ All selected addons translated and synced!");
+                setTimeout(() => { location.reload(); }, 2000);
+            } else {
+                showError("❌ Failed to sync with Stremio.");
+            }
+        }
+
+        // Enter key for login
         document.querySelectorAll('#login-section input').forEach(input => {
             input.addEventListener('keydown', (e) => { if (e.key === 'Enter') stremioLogin(); });
         });
