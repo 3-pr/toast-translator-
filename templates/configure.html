@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Translator</title>
-    <link rel="stylesheet" href="/static/style.css?v=0.2.5">
-    <script src="/static/utils.js?v=0.2.5"></script>
-    <script src="/static/stremio.js?v=0.2.5"></script>
-    <script src="/static/addonCard.js?v=0.2.5"></script>
-    <script src="/static/installer.js?v=0.2.5"></script>
+    <link rel="stylesheet" href="/static/style.css?v=0.2.6">
+    <script src="/static/utils.js?v=0.2.6"></script>
+    <script src="/static/stremio.js?v=0.2.6"></script>
+    <script src="/static/addonCard.js?v=0.2.6"></script>
+    <script src="/static/installer.js?v=0.2.6"></script>
 </head>
 
 <body>
@@ -21,191 +21,141 @@
         </div>
 
         <div class="description" id="desc-head">
-            <h2>A Stremio catalog translator ✨</h2>
-
-            <h2>📚 Compatible catalogs:</h2>
-            <ul class="addon-list">
-                <li>🎬 <a href="stremio://v3-cinemeta.strem.io/manifest.json" target="_blank"
-                        rel="noopener">Cinemeta</a></li>
-                <li>🏛️ <a href="stremio://caching.stremio.net/manifest.json" target="_blank" rel="noopener">Public
-                        Domains</a></li>
-                <li>📺 <a href="https://7a82163c306e-stremio-netflix-catalog-addon.baby-beamup.club/configure"
-                        target="_blank" rel="noopener">Streaming Catalogs</a></li>
-                <li>🎥 <a href="https://1fe84bc728af-imdb-catalogs.baby-beamup.club/manifest.json" target="_blank"
-                        rel="noopener">IMDB Catalogs</a></li>
-                <li>🍅 <a href="https://7a82163c306e-rottentomatoes.baby-beamup.club/manifest.json" target="_blank"
-                        rel="noopener">Rotten Tomatoes Catalogs</a></li>
-                <li>📊 <a href="https://1fe84bc728af-stremio-mdblist.baby-beamup.club/configure" target="_blank"
-                        rel="noopener">MDBLists Catalogs</a></li>
-                <li>🎭 <a href="https://trakt.dexter21767.com/configure/" target="_blank" rel="noopener">Trakt</a></li>
-                <li>🍣 <a href="stremio://anime-kitsu.strem.fun/manifest.json" target="_blank" rel="noopener">Anime
-                        Kitsu</a></li>
-                <li>🍜 <a href="https://1fe84bc728af-stremio-anime-catalogs.baby-beamup.club/configure" target="_blank"
-                        rel="noopener">Anime Catalogs</a></li>
-                <li>🦸‍♂️ <a href="stremio://addon-marvel.onrender.com/manifest.json" target="_blank"
-                        rel="noopener">Marvel Catalogs</a></li>
-            </ul>
-
-            <h2>🔧 How to translate:</h2>
-            <ul>
-                <li>📥 Install the original catalog (e.g., Cinemeta)</li>
-                <li>🔑 Log in on the configuration page</li>
-                <li>✅ Select the catalogs you want to translate</li>
-                <li>🎉 Click Apply and you're done!</li>
-            </ul>
-
-            <h2>❓ Configuration Notes:</h2>
-            <ul>
-                <li>🖼️ <strong>RPDB Posters</strong> → RPDB posters in English with free key, in selected language if
-                    tier is greater than 0</li>
-                <li>🖼️ <strong>Toast Ratings Posters</strong> → free posters with ratings in selected language</li>
-                <li>🖼️ <strong>Top Posters</strong> → posters with ratings. <a href="https://api.top-streaming.stream/"
-                        class="generate-link-btn">Get API KEY</a> </li>
-            </ul>
-
-            <h2>🔐 Why login?:</h2>
-            <ul>
-                <li>You can log in to load and install addons installed on your account</li>
-                <li>No personal data is stored outside of Stremio</li>
-                <li>If you don't want to log in you can use the Link Generator 🧩</li>
-            </ul>
-
-            <h2>🧩 Link Generator:</h2>
-            <ul>
-                <li>If you don't want to log in you can use the
-                    <a href="link_generator" class="generate-link-btn">Link Generator</a>
-                    to generate addon installation URLs
-                </li>
-            </ul>
+            <p>Premium Stremio catalog translator with dynamic posters</p>
         </div>
 
-        <!-- Configuration -->
-        <div class="config-group">
-            <h2>Configuration</h2>
-            <label for="tmdb-key">🔑 TMDB API Key</label>
-            <input type="text" id="tmdb-key" placeholder="Enter your TMDB API key">
-
-            <label for="rpdb-key">🔑 RPDB API Key (Optional)</label>
-            <input type="text" id="rpdb-key" placeholder="Enter your RPDB API key">
-
-            <label for="top-key">🔑 Top Posters API Key (Optional)</label>
-            <input type="text" id="top-key" placeholder="Enter your Top Posters API key">
-
-            <!-- Advanced BetterPoster Section -->
-            <div class="better-poster-config" style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
-                <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 24px;">🖼️</span> BetterPoster Options
-                </h3>
-                
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
-                    <input type="checkbox" id="better-poster-enabled" style="width: 22px; height: 22px; cursor: pointer;">
-                    <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-size: 18px; font-weight: 600;">Enable BetterPoster Service</label>
-                </div>
-
-                <div id="better-poster-options" style="display: none; flex-direction: column; gap: 15px;">
-                    <!-- Switches Grid -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="bp-trend" checked> <label for="bp-trend">Trend Tags</label>
-                        </div>
-                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="bp-quality" checked> <label for="bp-quality">Quality Tags</label>
-                        </div>
-                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="bp-genre" checked> <label for="bp-genre">Genre</label>
-                        </div>
-                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="bp-rating" checked> <label for="bp-rating">Rating</label>
-                        </div>
-                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" id="bp-average" checked> <label for="bp-average">Average Mode</label>
-                        </div>
-                    </div>
-
-                    <!-- Source Selector -->
-                    <div style="margin-top: 10px;">
-                        <label for="bp-source">⭐ Rating Source</label>
-                        <select id="bp-source" style="background: #0d1117;">
-                            <option value="IM">IMDb (Default)</option>
-                            <option value="TM">TMDB</option>
-                            <option value="RT">Rotten Tomatoes</option>
-                            <option value="MC">Metacritic</option>
-                            <option value="TR">Trakt</option>
-                            <option value="LB">Letterboxd</option>
-                            <option value="RE">Roger Ebert</option>
-                        </select>
-                    </div>
-
-                    <!-- Live Preview -->
-                    <div id="poster-preview" style="text-align: center; margin-top: 10px;">
-                        <img id="preview-img" src="https://btttr.cc/poster-qa/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 180px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border);">
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Live Preview (SHAWSHANK REDEMPTION)</p>
-                    </div>
-                </div>
-            </div>
-
-            <label for="language">🌍 Preferred Language</label>
-            <select id="language"></select>
-            <script src="/static/languages.js"></script>
-
-            <label for="addon-url">🧩 Add Addon from URL</label>
-            <div class="add-group" style="display: flex;">
-                <input type="text" id="addon-url" placeholder="URL of the addon manifest">
-                <button type="add" onclick="loadAddon(document.getElementById('addon-url').value, true)">+</button>
-            </div>
-        </div>
-
-        <!-- 👤 Login -->
-        <div class="login-group">
-            <h2>Login</h2>
+        <!-- Section 1: Login (Always visible until logged in) -->
+        <div id="login-section" class="config-group">
+            <h2 style="text-align: center;">🔑 Login to Stremio</h2>
+            <p style="font-size: 0.85rem; text-align: center; color: var(--text-muted);">Access your addons to start translating</p>
             <input type="email" id="stremio-email" placeholder="Stremio email">
             <input type="password" id="stremio-password" placeholder="Stremio password">
-            <button onclick="stremioLogin()">Login</button>
+            <button onclick="stremioLogin()">Login & Start</button>
+            <p style="text-align: center; margin-top: 15px;">
+                <a href="/link_generator" class="generate-link-btn">🧩 Use Link Generator Instead</a>
+            </p>
         </div>
 
-        <div id="addons-loader" class="loader"></div>
-        <div id="addons-container"></div>
+        <!-- Section 2: Main App (Hidden until login) -->
+        <div id="app-section" class="hidden">
+            <!-- Global Configuration -->
+            <div class="config-group">
+                <h2>⚙️ Global Configuration</h2>
+                
+                <label for="tmdb-key">🔑 TMDB API Key (Required)</label>
+                <input type="text" id="tmdb-key" placeholder="Enter your TMDB API key">
 
-        <div class="translate-button" hidden="true">
-            <button onclick="translateSelected(stremioUser.result.authKey, transteArray)">Apply</button>
-            <button onclick="reloadAddons(stremioUser.result.authKey)">Reload</button>
+                <label for="language">🌍 Preferred Language</label>
+                <select id="language"></select>
+                <script src="/static/languages.js"></script>
+
+                <!-- BetterPoster Advanced Options -->
+                <div class="better-poster-config">
+                    <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
+                        🖼️ BetterPoster Options
+                    </h3>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
+                        <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">Enable BetterPoster API</label>
+                    </div>
+
+                    <div id="better-poster-options" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="bp-average" checked> <label for="bp-average">Average</label>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="bp-rating" checked> <label for="bp-rating">Rating</label>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="bp-genre" checked> <label for="bp-genre">Genre</label>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="bp-quality" checked> <label for="bp-quality">Quality</label>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="bp-trend" checked> <label for="bp-trend">Trend Tags</label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            <label>⭐ Rating Source</label>
+                            <select id="bp-source">
+                                <option value="IM">IMDb</option>
+                                <option value="TM">TMDB</option>
+                                <option value="RT">Rotten Tomatoes</option>
+                                <option value="MC">Metacritic</option>
+                                <option value="TR">Trakt</option>
+                                <option value="LB">Letterboxd</option>
+                                <option value="RE">Roger Ebert</option>
+                            </select>
+                        </div>
+
+                        <div id="poster-preview">
+                            <img id="preview-img" src="" style="display: none;">
+                            <div id="preview-placeholder" style="padding: 40px; background: rgba(255,255,255,0.05); border-radius: 10px; color: var(--text-muted);">
+                                Change options to see preview
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <label for="addon-url" style="margin-top: 10px;">🧩 Custom Addon URL</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="addon-url" placeholder="Addon manifest.json URL">
+                    <button style="width: auto; margin:0;" onclick="loadAddon(document.getElementById('addon-url').value, true)">Add</button>
+                </div>
+            </div>
+
+            <div id="addons-loader" class="loader hidden"></div>
+            <div id="addons-container"></div>
+
+            <div class="translate-button hidden" id="action-buttons">
+                <button onclick="translateSelected(stremioUser.result.authKey, transteArray)">Apply Translation</button>
+                <button style="background: var(--border);" onclick="reloadAddons(stremioUser.result.authKey)">Reload Addons</button>
+            </div>
         </div>
 
-    </div>
-
-    <div class="donation">
-        <a href='https://ko-fi.com/S6S71MEJ1N' target='_blank'>
-            <img height='36' src='https://storage.ko-fi.com/cdn/kofi4.png?v=6' alt='Buy Me a Coffee at ko-fi.com' />
-        </a>
+        <div class="donation">
+            <a href='https://ko-fi.com/S6S71MEJ1N' target='_blank'>
+                <img height='36' src='https://storage.ko-fi.com/cdn/kofi4.png?v=6' alt='Support the project' />
+            </a>
+        </div>
     </div>
 
     <script>
-        // BetterPoster Logic
+        // BetterPoster Live Preview Logic
         const bpEnabled = document.getElementById('better-poster-enabled');
         const bpOptions = document.getElementById('better-poster-options');
         const previewImg = document.getElementById('preview-img');
-        const bpSwitches = ['bp-trend', 'bp-quality', 'bp-genre', 'bp-rating', 'bp-average'];
-        const bpSource = document.getElementById('bp-source');
+        const previewPlaceholder = document.getElementById('preview-placeholder');
+        const bpIds = ['bp-average', 'bp-rating', 'bp-genre', 'bp-quality', 'bp-trend', 'bp-source'];
 
         function updatePreview() {
-            if (!bpEnabled.checked) return;
-            
+            if (!bpEnabled.checked) {
+                previewImg.style.display = 'none';
+                previewPlaceholder.style.display = 'block';
+                return;
+            }
+
             let path = 'poster-';
             if (document.getElementById('bp-genre').checked) path += 'g';
             if (document.getElementById('bp-quality').checked) path += 'q';
             if (document.getElementById('bp-rating').checked) path += 'r';
             if (document.getElementById('bp-average').checked) path += 'a';
             
-            // Clean up path if only "poster-"
             if (path === 'poster-') path = 'poster';
 
             let params = '?lang=ar';
             if (!document.getElementById('bp-trend').checked) params += '&tag=none';
-            if (bpSource.value !== 'IM') params += '&rs=' + bpSource.value;
+            const source = document.getElementById('bp-source').value;
+            if (source !== 'IM') params += '&rs=' + source;
 
             const url = `https://btttr.cc/${path}/imdb/poster-default/tt0111161.jpg${params}`;
             previewImg.src = url;
-            console.log("BetterPoster URL Update:", url);
+            previewImg.style.display = 'inline-block';
+            previewPlaceholder.style.display = 'none';
         }
 
         bpEnabled.addEventListener('change', () => {
@@ -213,28 +163,29 @@
             updatePreview();
         });
 
-        [...bpSwitches, 'bp-source'].forEach(id => {
+        bpIds.forEach(id => {
             document.getElementById(id).addEventListener('change', updatePreview);
+        });
+
+        // Initialize preview
+        updatePreview();
+
+        // Stremio Login Flow Override
+        const originalLogin = window.stremioLogin;
+        window.stremioLogin = async function() {
+            const success = await originalLogin();
+            if (stremioUser && stremioUser.result && stremioUser.result.authKey) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('app-section').classList.remove('hidden');
+            }
+        };
+
+        // Enter key for login
+        document.querySelectorAll('#login-section input').forEach(input => {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') stremioLogin();
+            });
         });
     </script>
 </body>
-
-<script>
-    // Enable login on Enter key
-    document.addEventListener("DOMContentLoaded", () => {
-        const emailInput = document.getElementById("stremio-email");
-        const passwordInput = document.getElementById("stremio-password");
-
-        function tryLoginOnEnter(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                stremioLogin();
-            }
-        }
-
-        emailInput.addEventListener("keydown", tryLoginOnEnter);
-        passwordInput.addEventListener("keydown", tryLoginOnEnter);
-    });
-</script>
-
 </html>
