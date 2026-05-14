@@ -276,12 +276,8 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
         # Get from cache
         meta = meta_cache[language].get(id)
 
-        # Return cached meta
-        if meta != None:
-            return JSONResponse(content=meta, headers=cloudflare_cache_headers)
-
-        # Not in cache
-        else:
+        # Return cached meta (will apply overrides below)
+        if meta == None:
             # Handle imdb ids
             if 'tt' in id:
                 if USE_TMDB_ADDON:
@@ -438,26 +434,28 @@ async def get_meta(request: Request,response: Response, addon_url, user_settings
             # Not compatible id
             else:
                 response = await client.get(f"{addon_url}/meta/{type}/{id}.json", headers=stremio_headers)
-                return JSONResponse(content=response.json(), headers=cloudflare_cache_headers)
+                meta = response.json()
 
-
-            # BetterPoster Override
-            if bp == '1' and 'meta' in meta:
-                imdb_id = id if 'tt' in id else meta['meta'].get('imdb_id')
-                if imdb_id and 'tt' in imdb_id:
-                    meta['meta']['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
-
-            # Fix relative URLs in meta
-            if 'meta' in meta:
-                base_url = addon_url.rstrip('/')
-                if 'poster' in meta['meta'] and meta['meta']['poster'] and not meta['meta']['poster'].startswith('http'):
-                    meta['meta']['poster'] = f"{base_url}/{meta['meta']['poster'].lstrip('/')}"
-                if 'background' in meta['meta'] and meta['meta']['background'] and not meta['meta']['background'].startswith('http'):
-                    meta['meta']['background'] = f"{base_url}/{meta['meta']['background'].lstrip('/')}"
-
-            meta['meta']['id'] = id
+            # Save to cache if new
             meta_cache[language].set(id, meta)
-            return JSONResponse(content=meta, headers=cloudflare_cache_headers)
+
+        # Apply BetterPoster Override (Always runs, even if cached)
+        if bp == '1' and meta and 'meta' in meta:
+            imdb_id = id if 'tt' in id else meta['meta'].get('imdb_id')
+            if imdb_id and 'tt' in str(imdb_id):
+                meta['meta']['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
+
+        # Fix relative URLs (Always runs)
+        if meta and 'meta' in meta:
+            base_url = addon_url.rstrip('/')
+            if 'poster' in meta['meta'] and meta['meta']['poster'] and not meta['meta']['poster'].startswith('http'):
+                meta['meta']['poster'] = f"{base_url}/{meta['meta']['poster'].lstrip('/')}"
+            if 'background' in meta['meta'] and meta['meta']['background'] and not meta['meta']['background'].startswith('http'):
+                meta['meta']['background'] = f"{base_url}/{meta['meta']['background'].lstrip('/')}"
+            
+            meta['meta']['id'] = id
+
+        return JSONResponse(content=meta, headers=cloudflare_cache_headers)
 
 
 # Addon catalog reponse
