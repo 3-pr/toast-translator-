@@ -20,7 +20,7 @@ import zipfile
 import shutil
 
 # Settings
-translator_version = 'v0.2.0'
+translator_version = 'v0.2.1'
 FORCE_PREFIX = False
 FORCE_META = False
 USE_TMDB_ID_META = True
@@ -127,9 +127,8 @@ cinemeta_url = 'https://v3-cinemeta.strem.io'
 @app.get('/', response_class=HTMLResponse)
 @app.get('/configure', response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse(
-        request=request, name="configure.html", context={"request": request}, headers=cloudflare_cache_headers
-    )
+    response = templates.TemplateResponse("configure.html", {"request": request}, headers=cloudflare_cache_headers)
+    return response
 
 @app.get('/{addon_url}/{user_settings}/configure')
 async def configure(addon_url):
@@ -138,9 +137,8 @@ async def configure(addon_url):
 
 @app.get('/link_generator', response_class=HTMLResponse)
 async def link_generator(request: Request):
-    return templates.TemplateResponse(
-        request=request, name="link_generator.html", context={"request": request}, headers=cloudflare_cache_headers
-    )
+    response = templates.TemplateResponse("link_generator.html", {"request": request}, headers=cloudflare_cache_headers)
+    return response
 
 
 @app.get("/manifest.json")
@@ -459,8 +457,8 @@ async def get_subs(addon_url, path: str):
 
 @app.get('/dashboard', response_class=HTMLResponse)
 async def dashboard(request: Request):
-    return templates.TemplateResponse(
-        request=request, name="dashboard.html", context={"request": request}, headers=cloudflare_cache_headers)
+    response = templates.TemplateResponse("dashboard.html", {"request": request}, headers=cloudflare_cache_headers)
+    return response
 
 # Dashboard password check
 @app.get("/check_auth")
