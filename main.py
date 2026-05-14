@@ -186,6 +186,15 @@ async def get_manifest(addon_url, user_settings):
         if 'meta' not in manifest['resources']:
             manifest['resources'].append('meta')
 
+    # Ensure logo and background are absolute URLs
+    if 'logo' in manifest and not manifest['logo'].startswith('http'):
+        # Remove trailing slash from addon_url if exists
+        base_url = addon_url.rstrip('/')
+        manifest['logo'] = f"{base_url}/{manifest['logo'].lstrip('/')}"
+    if 'background' in manifest and not manifest['background'].startswith('http'):
+        base_url = addon_url.rstrip('/')
+        manifest['background'] = f"{base_url}/{manifest['background'].lstrip('/')}"
+
     return JSONResponse(content=manifest, headers=cloudflare_cache_headers)
 
 
