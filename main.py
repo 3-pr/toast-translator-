@@ -20,7 +20,7 @@ import zipfile
 import shutil
 
 # Settings
-translator_version = "v0.2.3" # Forced Rebuild
+translator_version = "v0.2.5" # Modern Runtime Fix
 FORCE_PREFIX = False
 FORCE_META = False
 USE_TMDB_ID_META = True
@@ -129,8 +129,7 @@ cinemeta_url = 'https://v3-cinemeta.strem.io'
 @app.get('/', response_class=HTMLResponse)
 @app.get('/configure', response_class=HTMLResponse)
 async def home(request: Request):
-    response = templates.TemplateResponse("configure.html", {"request": request}, headers=cloudflare_cache_headers)
-    return response
+    return templates.TemplateResponse(request=request, name="configure.html", context={"request": request}, headers=cloudflare_cache_headers)
 
 @app.get('/{addon_url}/{user_settings}/configure')
 async def configure(addon_url):
@@ -139,8 +138,7 @@ async def configure(addon_url):
 
 @app.get('/link_generator', response_class=HTMLResponse)
 async def link_generator(request: Request):
-    response = templates.TemplateResponse("link_generator.html", {"request": request}, headers=cloudflare_cache_headers)
-    return response
+    return templates.TemplateResponse(request=request, name="link_generator.html", context={"request": request}, headers=cloudflare_cache_headers)
 
 
 @app.get("/manifest.json")
