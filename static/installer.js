@@ -90,11 +90,23 @@ function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster) {
     if (!rpdbKey) {
         rpdbKey = "t0-free-rpdb";
     }
-    let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey}`;
-    if (rpdb) {
+
+    // BetterPoster Gathering
+    const bpEnabled = document.getElementById('better-poster-enabled').checked ? '1' : '0';
+    let bpPath = '';
+    if (document.getElementById('bp-genre').checked) bpPath += 'g';
+    if (document.getElementById('bp-quality').checked) bpPath += 'q';
+    if (document.getElementById('bp-rating').checked) bpPath += 'r';
+    if (document.getElementById('bp-average').checked) bpPath += 'a';
+    const bpSource = document.getElementById('bp-source').value;
+    const bpTrend = document.getElementById('bp-trend').checked ? '1' : '0';
+
+    let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled},bpp=${bpPath},bps=${bpSource},bpt=${bpTrend}`;
+    
+    if (rpdb === '1') {
         userSettings += `,rpdb_key=${rpdbKey}`
     }
-    else if (tsPoster) {
+    else if (tsPoster === '1') {
         userSettings += `,topkey=${topPosterKey}`
     }
 

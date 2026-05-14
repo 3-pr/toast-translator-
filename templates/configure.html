@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toast Translator</title>
-    <link rel="stylesheet" href="/static/style.css?v=0.2.1">
-    <script src="/static/utils.js?v=0.2.1"></script>
-    <script src="/static/stremio.js?v=0.2.1"></script>
-    <script src="/static/addonCard.js?v=0.2.1"></script>
-    <script src="/static/installer.js?v=0.2.1"></script>
+    <link rel="stylesheet" href="/static/style.css?v=0.2.5">
+    <script src="/static/utils.js?v=0.2.5"></script>
+    <script src="/static/stremio.js?v=0.2.5"></script>
+    <script src="/static/addonCard.js?v=0.2.5"></script>
+    <script src="/static/installer.js?v=0.2.5"></script>
 </head>
 
 <body>
@@ -91,6 +91,59 @@
             <label for="top-key">🔑 Top Posters API Key (Optional)</label>
             <input type="text" id="top-key" placeholder="Enter your Top Posters API key">
 
+            <!-- Advanced BetterPoster Section -->
+            <div class="better-poster-config" style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px;">
+                <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">🖼️</span> BetterPoster Options
+                </h3>
+                
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                    <input type="checkbox" id="better-poster-enabled" style="width: 22px; height: 22px; cursor: pointer;">
+                    <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-size: 18px; font-weight: 600;">Enable BetterPoster Service</label>
+                </div>
+
+                <div id="better-poster-options" style="display: none; flex-direction: column; gap: 15px;">
+                    <!-- Switches Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bp-trend" checked> <label for="bp-trend">Trend Tags</label>
+                        </div>
+                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bp-quality" checked> <label for="bp-quality">Quality Tags</label>
+                        </div>
+                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bp-genre" checked> <label for="bp-genre">Genre</label>
+                        </div>
+                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bp-rating" checked> <label for="bp-rating">Rating</label>
+                        </div>
+                        <div class="switch-item" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="bp-average" checked> <label for="bp-average">Average Mode</label>
+                        </div>
+                    </div>
+
+                    <!-- Source Selector -->
+                    <div style="margin-top: 10px;">
+                        <label for="bp-source">⭐ Rating Source</label>
+                        <select id="bp-source" style="background: #0d1117;">
+                            <option value="IM">IMDb (Default)</option>
+                            <option value="TM">TMDB</option>
+                            <option value="RT">Rotten Tomatoes</option>
+                            <option value="MC">Metacritic</option>
+                            <option value="TR">Trakt</option>
+                            <option value="LB">Letterboxd</option>
+                            <option value="RE">Roger Ebert</option>
+                        </select>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div id="poster-preview" style="text-align: center; margin-top: 10px;">
+                        <img id="preview-img" src="https://btttr.cc/poster-qa/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 180px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border);">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Live Preview (SHAWSHANK REDEMPTION)</p>
+                    </div>
+                </div>
+            </div>
+
             <label for="language">🌍 Preferred Language</label>
             <select id="language"></select>
             <script src="/static/languages.js"></script>
@@ -126,6 +179,44 @@
         </a>
     </div>
 
+    <script>
+        // BetterPoster Logic
+        const bpEnabled = document.getElementById('better-poster-enabled');
+        const bpOptions = document.getElementById('better-poster-options');
+        const previewImg = document.getElementById('preview-img');
+        const bpSwitches = ['bp-trend', 'bp-quality', 'bp-genre', 'bp-rating', 'bp-average'];
+        const bpSource = document.getElementById('bp-source');
+
+        function updatePreview() {
+            if (!bpEnabled.checked) return;
+            
+            let path = 'poster-';
+            if (document.getElementById('bp-genre').checked) path += 'g';
+            if (document.getElementById('bp-quality').checked) path += 'q';
+            if (document.getElementById('bp-rating').checked) path += 'r';
+            if (document.getElementById('bp-average').checked) path += 'a';
+            
+            // Clean up path if only "poster-"
+            if (path === 'poster-') path = 'poster';
+
+            let params = '?lang=ar';
+            if (!document.getElementById('bp-trend').checked) params += '&tag=none';
+            if (bpSource.value !== 'IM') params += '&rs=' + bpSource.value;
+
+            const url = `https://btttr.cc/${path}/imdb/poster-default/tt0111161.jpg${params}`;
+            previewImg.src = url;
+            console.log("BetterPoster URL Update:", url);
+        }
+
+        bpEnabled.addEventListener('change', () => {
+            bpOptions.style.display = bpEnabled.checked ? 'flex' : 'none';
+            updatePreview();
+        });
+
+        [...bpSwitches, 'bp-source'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updatePreview);
+        });
+    </script>
 </body>
 
 <script>

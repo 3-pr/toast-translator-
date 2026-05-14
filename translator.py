@@ -70,7 +70,7 @@ async def translate_episodes_with_api(client: httpx.AsyncClient, episodes: list[
     return episodes
 
 
-def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language: str) -> dict:
+def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_ratings, rpdb, rpdb_key, top_stream_key, language: str, bp: str = '0', bpp: str = '', bps: str = 'IM', bpt: str = '1') -> dict:
     new_catalog = original
 
     for i, item in enumerate(new_catalog['metas']):
@@ -91,6 +91,14 @@ def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg"
                         else:
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg?lang={language.split('-')[0]}"
+                elif bp == '1':
+                    imdb_id = tmdb_meta[i].get('imdb_id', '')
+                    if 'tt' in imdb_id:
+                        params = f"?lang={language.split('-')[0]}"
+                        if bpt == '0': params += "&tag=none"
+                        if bps != 'IM': params += f"&rs={bps}"
+                        path = f"poster-{bpp}" if bpp else "poster"
+                        item['poster'] = f"https://btttr.cc/{path}/imdb/poster-default/{imdb_id}.jpg{params}"
                 elif top_stream_poster == '1':
                     if 'tt' in tmdb_meta[i].get('imdb_id', ''):
                         item['poster'] = f"https://api.top-streaming.stream/{top_stream_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg?lang={language}"
@@ -113,6 +121,14 @@ def translate_catalog(original: dict, tmdb_meta: dict, top_stream_poster, toast_
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg"
                         else:
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg?lang={language.split('-')[0]}"
+                    elif bp == '1':
+                        imdb_id = tmdb_meta[i].get('imdb_id', '')
+                        if 'tt' in imdb_id:
+                            params = f"?lang={language.split('-')[0]}"
+                            if bpt == '0': params += "&tag=none"
+                            if bps != 'IM': params += f"&rs={bps}"
+                            path = f"poster-{bpp}" if bpp else "poster"
+                            item['poster'] = f"https://btttr.cc/{path}/imdb/poster-default/{imdb_id}.jpg{params}"
                     elif top_stream_poster == '1':
                         item['poster'] = f"https://api.top-streaming.stream/{top_stream_key}/imdb/poster-default/{tmdb_meta[i]['imdb_id']}.jpg?lang={language}"
                     else:
