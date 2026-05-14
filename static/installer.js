@@ -1,25 +1,29 @@
-function generateTranslatorLink(addonUrl, rpdb, toast_ratings, tsPoster, bpOverride = null) {
+function generateTranslatorLink(addonUrl, rpdbOverride = null, toast_ratings = '0', tsPoster = '0', bpOverride = null) {
     const serverUrl = window.location.origin;
     const baseAddonUrl = getBaseUrl(addonUrl).replace("/manifest.json", "");
     const urlEncoded = btoa(baseAddonUrl);
     const tmdbApiKey = document.getElementById("tmdb-key").value;
     const language = document.getElementById("language").value;
-    let rpdbKey = document.getElementById("rpdb-key") ? document.getElementById("rpdb-key").value : "";
-    const topPosterKey = document.getElementById("top-key") ? document.getElementById("top-key").value : "";
+    let rpdbKey = "t0-free-rpdb"; // Use default free key unless extended later
 
-    // BetterPoster Logic (use override if provided, otherwise fallback to global)
+    // BetterPoster Logic
     let bpEnabled = bpOverride;
     if (bpEnabled === null) {
         const globalBP = document.getElementById('better-poster-enabled');
         bpEnabled = globalBP && globalBP.checked ? '1' : '0';
     }
 
-    let userSettings = `rpdb=${rpdb},tr=${toast_ratings},tsp=${tsPoster},language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled}`;
+    // RPDB / IMDb Poster Logic
+    let rpdbEnabled = rpdbOverride;
+    if (rpdbEnabled === null) {
+        const globalRPDB = document.getElementById('rpdb-enabled');
+        rpdbEnabled = globalRPDB && globalRPDB.checked ? '1' : '0';
+    }
+
+    let userSettings = `rpdb=${rpdbEnabled},tr=0,tsp=0,language=${language},tmdb_key=${tmdbApiKey},bp=${bpEnabled}`;
     
-    if (rpdb === '1') {
-        userSettings += `,rpdb_key=${rpdbKey || "t0-free-rpdb"}`;
-    } else if (tsPoster === '1') {
-        userSettings += `,topkey=${topPosterKey}`;
+    if (rpdbEnabled === '1') {
+        userSettings += `,rpdb_key=${rpdbKey}`;
     }
 
     if (addonUrl.includes(serverUrl)) {

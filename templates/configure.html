@@ -40,12 +40,6 @@
                 <select id="language"></select>
                 <script src="/static/languages.js"></script>
 
-                <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-top: 10px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px;">
-                        <label for="better-poster-enabled" style="margin:0;">Global BetterPoster Toggle</label>
-                    </div>
-                </div>
 
                 <label for="addon-url" style="margin-top: 15px;">🧩 Add Custom Addon</label>
                 <div style="display: flex; gap: 10px;">
@@ -94,8 +88,8 @@
                 const newTransportUrl = generateTranslatorLink(
                     addon.transportUrl, 
                     addon.rpdb, 
-                    addon.toastRatings, 
-                    addon.tsPoster, 
+                    '0', 
+                    '0', 
                     addon.bp
                 );
                 

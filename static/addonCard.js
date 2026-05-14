@@ -78,9 +78,7 @@ function createAddonCard(manifest, url, type = "default", appendNow = true) {
     optionsGrid.className = "poster-options";
 
     optionsGrid.appendChild(createOption(manifest, "bp", "✨ BetterPoster"));
-    optionsGrid.appendChild(createOption(manifest, "rpdb", "⭐ RPDB Posters"));
-    optionsGrid.appendChild(createOption(manifest, "tr", "📊 Toast Ratings"));
-    optionsGrid.appendChild(createOption(manifest, "tsp", "🎬 Top Stream"));
+    optionsGrid.appendChild(createOption(manifest, "rpdb", "⭐ IMDb Poster"));
 
     addonCard.appendChild(optionsGrid);
 
@@ -152,25 +150,23 @@ function createLinkTextBox(manifest) {
 function toggleAddonSelection(btn, manifest, url) {
     const bp = document.getElementById(`bp-${manifest.id}`);
     const rpdb = document.getElementById(`rpdb-${manifest.id}`);
-    const tr = document.getElementById(`tr-${manifest.id}`);
-    const tsp = document.getElementById(`tsp-${manifest.id}`);
 
     if (btn.state === "active") {
         btn.state = "selected";
         btn.innerText = "Remove Selection";
         btn.style.backgroundColor = "var(--danger)";
 
-        [bp, rpdb, tr, tsp].forEach(c => c.disabled = true);
+        [bp, rpdb].forEach(c => c.disabled = true);
 
         manifest.transportUrl = url;
         manifest.bp = bp.checked ? '1' : '0';
         manifest.rpdb = rpdb.checked ? '1' : '0';
-        manifest.toastRatings = tr.checked ? '1' : '0';
-        manifest.tsPoster = tsp.checked ? '1' : '0';
+        manifest.toastRatings = '0';
+        manifest.tsPoster = '0';
         
         transteArray.push(manifest);
     } else {
-        [bp, rpdb, tr, tsp].forEach(c => c.disabled = false);
+        [bp, rpdb].forEach(c => c.disabled = false);
         btn.state = "active";
         btn.innerText = "Select Addon";
         btn.style.backgroundColor = "var(--success)";
@@ -187,10 +183,8 @@ async function generateLinkByCard(manifest, url) {
 
     const bp = document.getElementById(`bp-${manifest.id}`).checked ? '1' : '0';
     const rpdb = document.getElementById(`rpdb-${manifest.id}`).checked ? '1' : '0';
-    const tr = document.getElementById(`tr-${manifest.id}`).checked ? '1' : '0';
-    const tsp = document.getElementById(`tsp-${manifest.id}`).checked ? '1' : '0';
 
-    const link = generateTranslatorLink(url, rpdb, tr, tsp, bp);
+    const link = generateTranslatorLink(url, rpdb, '0', '0', bp);
     const box = document.getElementById(`linkBox-${manifest.id}`);
     box.value = link;
     box.classList.remove("hidden");

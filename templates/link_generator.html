@@ -30,15 +30,21 @@
             <select id="language"></select>
             <script src="/static/languages.js"></script>
 
-            <!-- Simplified BetterPoster Section -->
+            <!-- Poster Options -->
             <div class="better-poster-config">
                 <h3 style="margin-top:0; color: var(--accent); display: flex; align-items: center; gap: 10px;">
-                    🖼️ BetterPoster Support
+                    🖼️ Poster Options
                 </h3>
                 
-                <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px;">
-                    <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px; cursor: pointer;">
-                    <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">Enable BetterPoster Service</label>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="better-poster-enabled" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="better-poster-enabled" style="margin:0; cursor: pointer; font-weight: 600;">✨ Enable BetterPoster</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="rpdb-enabled" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="rpdb-enabled" style="margin:0; cursor: pointer; font-weight: 600;">⭐ Enable IMDb Poster</label>
+                    </div>
                 </div>
 
                 <div id="poster-preview" style="text-align: center; margin-top: 10px;">

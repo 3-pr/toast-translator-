@@ -52,13 +52,13 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
     base_url = addon_url.rstrip('/')
 
     for i, item in enumerate(new_catalog['metas']):
-        # 1. Fix relative URLs first (before overrides)
+        # 1. Fix relative URLs first
         if item.get('poster') and not item['poster'].startswith('http'):
             item['poster'] = f"{base_url}/{item['poster'].lstrip('/')}"
         if item.get('background') and not item['background'].startswith('http'):
             item['background'] = f"{base_url}/{item['background'].lstrip('/')}"
 
-        # 2. Get IMDb ID from any available source
+        # 2. Get IMDb ID
         imdb_id = item.get('imdb_id', '')
         if not imdb_id and 'tt' in item.get('id', ''):
             imdb_id = item['id']
@@ -82,7 +82,7 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
                     if detail.get('backdrop_path'):
                         item['background'] = tmdb.TMDB_BACK_URL + detail['backdrop_path']
 
-                    # Poster Overrides (Priority: BP > RPDB > Toast > TS > TMDB)
+                    # Poster Overrides (Priority: BP > IMDb Poster)
                     if bp == '1' and imdb_id and 'tt' in str(imdb_id):
                         item['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
                     elif rpdb == '1' and imdb_id and 'tt' in str(imdb_id):
@@ -90,18 +90,18 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg"
                         else:
                             item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg?lang={language.split('-')[0]}"
-                    elif toast_ratings == '1' and imdb_id and 'tt' in str(imdb_id):
-                        item['poster'] = f"{RATINGS_SERVER}/{item_type}/get_poster/{language}/{imdb_id}.jpg"
-                    elif top_stream_poster == '1' and imdb_id and 'tt' in str(imdb_id) and top_stream_key:
-                        clean_key = top_stream_key.strip('/')
-                        item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?lang={language}"
                     elif detail.get('poster_path'):
                         item['poster'] = tmdb.TMDB_POSTER_URL + detail['poster_path']
             except:
                 pass
         
-        # 4. Fallback: If no TMDB data but we have BP enabled and an IMDb ID
+        # 4. Fallback: If no TMDB data but we have BP or RPDB enabled
         elif bp == '1' and imdb_id and 'tt' in str(imdb_id):
             item['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
+        elif rpdb == '1' and imdb_id and 'tt' in str(imdb_id):
+            if 't0' in rpdb_key:
+                item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg"
+            else:
+                item['poster'] = f"https://api.ratingposterdb.com/{rpdb_key}/imdb/poster-default/{imdb_id}.jpg?lang={language.split('-')[0]}"
 
     return new_catalog
