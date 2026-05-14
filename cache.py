@@ -1,9 +1,22 @@
+import os
 from diskcache import Cache as diskCache
-#from cachetools import TTLCache
+
+# Detect Vercel environment
+IS_VERCEL = os.environ.get('VERCEL') == '1'
 
 class Cache():
 
     def __init__(self, dir: str, expires: int = None):
+        # Vercel only allows writing to /tmp
+        if IS_VERCEL:
+            if dir.startswith('./'):
+                dir = os.path.join('/tmp', dir[2:])
+            elif not dir.startswith('/'):
+                dir = os.path.join('/tmp', dir)
+        
+        # Ensure parent directory exists
+        os.makedirs(os.path.dirname(dir), exist_ok=True)
+
         self.cache = diskCache(dir, sqlite_cache_size=50000, disk_min_file_size=0, eviction_policy='least-recently-stored')
         self.expires = expires
 

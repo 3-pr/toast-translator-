@@ -46,3 +46,41 @@ If you don't want to log in, you can use the [Link Generator](https://0f693ad7dc
 Special thanks to the following repositories which were used to map anime IDs:  
 - [Fribb / anime-lists](https://github.com/Fribb/anime-lists)  
 - [Kometa-Team / Anime-IDs](https://github.com/Kometa-Team/Anime-IDs)
+
+
+روابط البوستر وخياراته 
+
+خيارات البوستر
+Trend Tags
+Quality Tags
+Genre
+Rating
+Source
+Age Rating
+الرابط اذا كان مفعل جميع الخيارات على وضع average يكون كذا
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar
+اذا كان زر taend taggs مغلق
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?tag=none&lang=ar
+ اذا كان زر quality tags مغلق 
+ https://btttr.cc/poster-a/imdb/poster-default/{imdb_id}.jpg?lang=ar
+ اذا كان زر Genre مغلق
+https://btttr.cc/poster-ra/imdb/poster-default/{imdb_id}.jpg?lang=ar
+
+اذا زر rating مغلق
+https://btttr.cc/poster-gqa/imdb/poster-default/{imdb_id}.jpg?lang=ar
+
+انواع السورس الخاصه بالتقييم
+imdb فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=IM
+tmdb فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=TM
+rotten tomstoes فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=RT
+metacritic فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=MC
+traket فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=TR
+letterboxd فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=LB
+roger ebert فقط
+https://btttr.cc/poster-qa/imdb/poster-default/{imdb_id}.jpg?lang=ar&rs=RE
