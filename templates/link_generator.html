@@ -47,9 +47,29 @@
                     </div>
                 </div>
 
-                <div id="poster-preview" style="text-align: center; margin-top: 10px;">
-                    <img src="https://btttr.cc/poster/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 160px; border-radius: 10px; border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div id="poster-previews" style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 0.8em; color: var(--accent); margin-bottom: 5px;">BetterPoster</p>
+                        <img src="https://btttr.cc/poster/imdb/poster-default/tt0111161.jpg?lang=ar" style="max-width: 140px; border-radius: 10px; border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 0.8em; color: var(--success); margin-bottom: 5px;">IMDb Poster</p>
+                        <img src="https://api.ratingposterdb.com/t0-free-rpdb/imdb/poster-default/tt0111161.jpg" style="max-width: 140px; border-radius: 10px; border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    </div>
                 </div>
+
+                <script>
+                    const bpCheck = document.getElementById('better-poster-enabled');
+                    const rpdbCheck = document.getElementById('rpdb-enabled');
+                    
+                    bpCheck.addEventListener('change', () => {
+                        if (bpCheck.checked) rpdbCheck.checked = false;
+                    });
+                    
+                    rpdbCheck.addEventListener('change', () => {
+                        if (rpdbCheck.checked) bpCheck.checked = false;
+                    });
+                </script>
             </div>
 
             <label for="addon-url" style="margin-top: 20px;">🧩 Load Addon from URL</label>
