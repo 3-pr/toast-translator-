@@ -11,16 +11,9 @@ const select = document.getElementById('language');
 fetch('languages.json')
     .then(response => response.json())
     .then(locales_main => {
-        locales_main.forEach(locale => {
+        locales_main.filter(l => l === 'ar-SA').forEach(locale => {
             const [lang, country] = locale.split('-');
-
-            let languageName;
-            try {
-                languageName = new Intl.DisplayNames([lang], { type: 'language' }).of(lang);
-            } catch {
-                languageName = lang;
-            }
-
+            const languageName = "العربية";
             const flag = flagFromCountry(country);
 
             const option = document.createElement('option');
