@@ -86,7 +86,7 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
                     
                     elif top_stream_poster == '1' and imdb_id and 'tt' in str(imdb_id) and top_stream_key:
                         clean_key = top_stream_key.strip('/')
-                        item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?lang={language}"
+                        item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?badges=imdb,letterboxd,rogerebert&trend=up:5&lang=en&style=modern"
                     
                     # Default TMDB Poster (Always used if nothing else is selected or found)
                     elif detail.get('poster_path'):
@@ -99,6 +99,6 @@ def translate_catalog(original: dict, tmdb_meta: list, top_stream_poster, toast_
             item['poster'] = f"https://btttr.cc/poster/imdb/poster-default/{imdb_id}.jpg?lang=ar"
         elif top_stream_poster == '1' and imdb_id and 'tt' in str(imdb_id) and top_stream_key:
             clean_key = top_stream_key.strip('/')
-            item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?lang={language}"
+            item['poster'] = f"https://api.top-streaming.stream/{clean_key}/imdb/poster-default/{imdb_id}.jpg?badges=imdb,letterboxd,rogerebert&trend=up:5&lang=en&style=modern"
 
     return new_catalog
