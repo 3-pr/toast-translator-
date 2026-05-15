@@ -111,19 +111,12 @@ function createAddonCard(manifest, url, type = "default", appendNow = true) {
 
     addonCard.appendChild(actionsDiv);
 
-    // Exclusive logic & topkey visibility
+    // Exclusive logic
     const checkboxes = optionsGrid.querySelectorAll('input');
     checkboxes.forEach(chk => {
         chk.addEventListener('change', () => {
             if (chk.checked) {
                 checkboxes.forEach(other => { if (other !== chk) other.checked = false; });
-            }
-            
-            // Toggle global topkey group if ANY TSP is checked
-            const topKeyGroup = document.getElementById('top-key-group');
-            if (topKeyGroup) {
-                const anyTsp = document.querySelectorAll('input[id^="tsp-"]:checked').length > 0;
-                topKeyGroup.classList.toggle('hidden', !anyTsp);
             }
         });
     });

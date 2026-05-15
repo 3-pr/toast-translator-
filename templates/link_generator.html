@@ -51,8 +51,8 @@
                     </div>
                 </div>
 
-                <div id="top-key-group" class="hidden" style="margin-top: 15px;">
-                    <label for="top-key">🔑 مفتاح Top Poster API</label>
+                <div id="top-key-group" style="margin-top: 15px;">
+                    <label for="top-key">🔑 مفتاح Top Poster API (اختياري)</label>
                     <input type="text" id="top-key" placeholder="مثال: poster-qa">
                 </div>
 
@@ -75,7 +75,6 @@
                     const bpCheck = document.getElementById('better-poster-enabled');
                     const tpCheck = document.getElementById('top-poster-enabled');
                     const tmdbCheck = document.getElementById('tmdb-poster-enabled');
-                    const topKeyGroup = document.getElementById('top-key-group');
                     
                     const checks = [bpCheck, tpCheck, tmdbCheck];
                     
@@ -84,7 +83,6 @@
                             if (chk.checked) {
                                 checks.forEach(other => { if (other !== chk) other.checked = false; });
                             }
-                            topKeyGroup.classList.toggle('hidden', !tpCheck.checked);
                         });
                     });
                 </script>
