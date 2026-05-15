@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toast Translator</title>
-    <link rel="stylesheet" href="/static/style.css?v=0.2.9">
-    <script src="/static/utils.js?v=0.2.9"></script>
-    <script src="/static/stremio.js?v=0.2.9"></script>
-    <script src="/static/addonCard.js?v=0.2.9"></script>
-    <script src="/static/installer.js?v=0.2.9"></script>
+    <title>Stremio Arabic Plus</title>
+    <link rel="stylesheet" href="/static/style.css?v=1.5">
+    <script src="/static/utils.js?v=1.5"></script>
+    <script src="/static/stremio.js?v=1.5"></script>
+    <script src="/static/addonCard.js?v=1.5"></script>
+    <script src="/static/installer.js?v=1.5"></script>
 </head>
 
 <body>
@@ -18,33 +18,35 @@
             <span class="toast">Stremio</span>
             <span class="translator">Arabic Plus</span>
         </div>
+        <div class="description">
+            <p>الترجمة العربية المتكاملة لستريميو (وصف الأفلام + بوسترات احترافية)</p>
+        </div>
 
         <!-- Section 1: Login -->
         <div id="login-section" class="config-group">
-            <h2 style="text-align: center;">🔑 Stremio Login</h2>
-            <input type="email" id="stremio-email" placeholder="Email">
-            <input type="password" id="stremio-password" placeholder="Password">
-            <button onclick="stremioLogin()">Login</button>
-            <p style="text-align: center; margin-top: 15px;">
-                <a href="/link_generator" class="generate-link-btn">🧩 Use Link Generator</a>
+            <h2 style="text-align: center; margin-bottom: 10px; font-size: 18px;">🔑 تسجيل الدخول ستريميو</h2>
+            <input type="email" id="stremio-email" placeholder="البريد الإلكتروني">
+            <input type="password" id="stremio-password" placeholder="كلمة المرور">
+            <button onclick="stremioLogin()">تسجيل الدخول</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 13px;">
+                <a href="/link_generator" style="color: var(--accent); text-decoration: none; font-weight: 600;">🧩 استخدام مولد الروابط يدوياً</a>
             </p>
         </div>
 
         <!-- Section 2: App -->
         <div id="app-section" class="hidden">
             <div class="config-group">
-                <label for="tmdb-key">🔑 TMDB API Key</label>
-                <input type="text" id="tmdb-key" placeholder="Enter TMDB API key">
+                <label for="tmdb-key">🔑 مفتاح TMDB API</label>
+                <input type="text" id="tmdb-key" placeholder="أدخل مفتاح TMDB الخاص بك">
 
-                <label for="language">🌍 Translation Language</label>
+                <label for="language">🌍 لغة الترجمة</label>
                 <select id="language"></select>
                 <script src="/static/languages.js"></script>
 
-
-                <label for="addon-url" style="margin-top: 15px;">🧩 Add Custom Addon</label>
+                <label for="addon-url" style="margin-top: 15px;">🧩 إضافة إضافات مخصصة</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="addon-url" placeholder="Addon URL">
-                    <button style="width: auto; margin:0;" onclick="loadAddon(document.getElementById('addon-url').value, true)">Add</button>
+                    <input type="text" id="addon-url" placeholder="رابط الإضافة (manifest.json)">
+                    <button style="width: auto; margin:0; padding: 0 20px;" onclick="loadAddon(document.getElementById('addon-url').value, true)">إضافة</button>
                 </div>
             </div>
 
@@ -52,15 +54,25 @@
             <div id="addons-container"></div>
 
             <div class="addon-actions hidden" id="action-buttons" style="margin-top: 20px;">
-                <button onclick="translateSelectedAddons()" style="background: var(--success);">Apply All Translations</button>
-                <button onclick="reloadAddons(stremioUser.result.authKey)" style="background: var(--border);">Reload Addon List</button>
+                <button onclick="translateSelectedAddons()" style="background: var(--success); color: #fff;">تطبيق كافة التعديلات والمزامنة</button>
+                <button onclick="reloadAddons(stremioUser.result.authKey)" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-card);">تحديث القائمة</button>
             </div>
         </div>
 
-        <div class="donation">
-            <a href='https://ko-fi.com/S6S71MEJ1N' target='_blank'>
-                <img height='36' src='https://storage.ko-fi.com/cdn/kofi4.png?v=6' alt='Support the project' />
-            </a>
+        <!-- Support Card -->
+        <a href="https://creators.sa/i" target="_blank" rel="noopener noreferrer" class="support-card">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            <span>دعم المشروع مادياً</span>
+        </a>
+
+        <!-- Footer & Mentions -->
+        <div class="footer">
+            <div class="mentions">
+                <p>© 2026 جميع الحقوق محفوظة لـ <a href="https://github.com/3-pr" target="_blank">ياسر الحربي</a></p>
+                <p style="margin-top: 8px; opacity: 0.7;">هذه الإضافة مبنية على الكود المصدري لـ <a href="https://github.com/diogomiguel93/toast-translator" target="_blank">Toast Translator</a></p>
+            </div>
         </div>
     </div>
 
@@ -69,13 +81,13 @@
 
         async function translateSelectedAddons() {
             if (transteArray.length === 0) {
-                showError("⚠️ Please select at least one addon first!");
+                showError("⚠️ يرجى اختيار إضافة واحدة على الأقل!");
                 return;
             }
 
             const tmdbKey = document.getElementById("tmdb-key").value;
             if (!tmdbKey) {
-                showError("⚠️ TMDB Key is required!");
+                showError("⚠️ مفتاح TMDB مطلوب لإتمام العملية!");
                 return;
             }
 
@@ -89,16 +101,14 @@
                     addon.transportUrl, 
                     addon.rpdb, 
                     '0', 
-                    '0', 
+                    addon.tsPoster, 
                     addon.bp
                 );
                 
-                // Find and update the addon in the collection
                 const index = currentAddons.findIndex(a => a.transportUrl === addon.transportUrl);
                 if (index !== -1) {
                     currentAddons[index].transportUrl = newTransportUrl;
                 } else {
-                    // If not found (manually added), add it
                     currentAddons.push({
                         transportUrl: newTransportUrl,
                         manifest: addon
@@ -110,14 +120,13 @@
             hideLoader();
 
             if (response.result && response.result.success) {
-                showSuccess("✅ All selected addons translated and synced!");
+                showSuccess("✅ تم تعريب ومزامنة كافة الإضافات المختارة!");
                 setTimeout(() => { location.reload(); }, 2000);
             } else {
-                showError("❌ Failed to sync with Stremio.");
+                showError("❌ فشل المزامنة مع ستريميو.");
             }
         }
 
-        // Enter key for login
         document.querySelectorAll('#login-section input').forEach(input => {
             input.addEventListener('keydown', (e) => { if (e.key === 'Enter') stremioLogin(); });
         });
